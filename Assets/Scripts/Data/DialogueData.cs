@@ -22,7 +22,7 @@ public class DialogueChoice
 {
     public string choiceText;
     public int targetNodeId;
-    public string requirementFlag; // 需要满足的条件标记
+    public string requirementFlag; // 可选：需要满足的条件标记
 }
 
 [CreateAssetMenu(fileName = "NewDialogue", menuName = "Visual Novel/Dialogue Data")]

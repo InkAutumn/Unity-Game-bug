@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public string dumplingGameSceneName = "DumplingGameScene";
 
     private int returnNodeId = -1; // 从小游戏返回时要显示的对话节点
+    private int preMinigameNodeId = -1; // 小游戏触发前的对话节点（用于保存点）
 
     void Awake()
     {
@@ -62,12 +63,11 @@ public class GameManager : MonoBehaviour
 
     public void LoadDumplingGame()
     {
-        // 保存当前对话状态
-        DialogueManager dialogueManager = FindObjectOfType<DialogueManager>();
-        if (dialogueManager != null)
+        // 保存小游戏触发前的对话节点ID
+        if (DialogueManager.Instance != null)
         {
-            // 可以在这里保存要返回的节点ID
-            // returnNodeId = 某个节点ID;
+            preMinigameNodeId = DialogueManager.Instance.GetCurrentNodeId();
+            Debug.Log($"保存小游戏前节点ID: {preMinigameNodeId}");
         }
 
         SceneManager.LoadScene(dumplingGameSceneName);
@@ -86,5 +86,17 @@ public class GameManager : MonoBehaviour
     {
         // 可以在这里保存对话数据的引用
         SceneManager.LoadScene(dialogueSceneName);
+    }
+
+    // 新增：获取小游戏前的节点ID
+    public int GetPreMinigameNodeId()
+    {
+        return preMinigameNodeId;
+    }
+
+    // 新增：设置小游戏前的节点ID
+    public void SetPreMinigameNodeId(int nodeId)
+    {
+        preMinigameNodeId = nodeId;
     }
 }

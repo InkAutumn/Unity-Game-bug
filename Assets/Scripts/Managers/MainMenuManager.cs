@@ -1,0 +1,171 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class MainMenuManager : MonoBehaviour
+{
+    [Header("UI References")]
+    public Button newGameButton;
+    public Button loadGameButton;
+    public Button settingsButton;
+    public Button quitButton;
+
+    [Header("Panels")]
+    public GameObject settingsPanel;
+
+    [Header("Scene Names")]
+    public string dialogueSceneName = "DialogueScene";
+
+    void Start()
+    {
+        // 绑定按钮事件
+        if (newGameButton != null)
+        {
+            newGameButton.onClick.AddListener(OnNewGame);
+        }
+
+        if (loadGameButton != null)
+        {
+            loadGameButton.onClick.AddListener(OnLoadGame);
+            // 检查是否存在存档，决定按钮是否可用
+            UpdateLoadGameButton();
+        }
+
+        if (settingsButton != null)
+        {
+            settingsButton.onClick.AddListener(OnSettings);
+        }
+
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(OnQuit);
+        }
+
+        // 隐藏设置面板
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+
+        // 播放主菜单BGM
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayBGM("mainMenuBGM");
+        }
+    }
+
+    void UpdateLoadGameButton()
+    {
+        if (loadGameButton == null) return;
+
+        // 检查是否存在存档
+        bool hasSaveFile = SaveLoadManager.Instance != null && SaveLoadManager.Instance.HasSaveFile();
+
+        // 设置按钮可交互状态
+        loadGameButton.interactable = hasSaveFile;
+
+        // 可选：改变按钮视觉效果
+        Text buttonText = loadGameButton.GetComponentInChildren<Text>();
+        if (buttonText != null)
+        {
+            buttonText.color = hasSaveFile ? Color.white : Color.gray;
+        }
+    }
+
+    void OnNewGame()
+    {
+        Debug.Log("开始新游戏");
+
+        // 播放点击音效
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("buttonClick");
+        }
+
+        // 清除旧存档（可选：弹出确认对话框）
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.DeleteSave();
+        }
+
+        // 重置剧情标记
+        if (DialogueManager.Instance != null)
+        {
+            // DialogueManager会在场景切换时保留，所以先清理
+            DialogueManager.Instance.ClearAllFlags();
+        }
+
+        // 加载对话场景
+        SceneManager.LoadScene(dialogueSceneName);
+    }
+
+    void OnLoadGame()
+    {
+        Debug.Log("加载游戏");
+
+        // 播放点击音效
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("buttonClick");
+        }
+
+        // 加载存档
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveData data = SaveLoadManager.Instance.LoadGame();
+
+            if (data != null)
+            {
+                // 加载对话场景，然后恢复进度
+                SceneManager.LoadScene(dialogueSceneName);
+            }
+            else
+            {
+                Debug.LogWarning("加载存档失败！");
+            }
+        }
+    }
+
+    void OnSettings()
+    {
+        Debug.Log("打开设置");
+
+        // 播放点击音效
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("buttonClick");
+        }
+
+        // 显示设置面板
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(true);
+        }
+    }
+
+    void OnQuit()
+    {
+        Debug.Log("退出游戏");
+
+        // 播放点击音效
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("buttonClick");
+        }
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
+    // 关闭设置面板（由SettingsPanel中的返回按钮调用）
+    public void CloseSettings()
+    {
+        if (settingsPanel != null)
+        {
+            settingsPanel.SetActive(false);
+        }
+    }
+}

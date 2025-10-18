@@ -24,6 +24,7 @@ public class DialogueManager : MonoBehaviour
     private bool isTyping = false;
     private Coroutine typingCoroutine;
     private Dictionary<string, bool> storyFlags = new Dictionary<string, bool>();
+    private int currentNodeId = -1;
 
     public event Action OnMinigameTriggered;
 
@@ -48,6 +49,7 @@ public class DialogueManager : MonoBehaviour
     public void ShowNode(int nodeId)
     {
         currentNode = currentDialogue.GetNode(nodeId);
+        currentNodeId = nodeId;
 
         if (currentNode == null)
         {
@@ -107,6 +109,12 @@ public class DialogueManager : MonoBehaviour
         }
 
         isTyping = false;
+
+        // 添加到历史记录
+        if (DialogueHistoryManager.Instance != null)
+        {
+            DialogueHistoryManager.Instance.AddDialogueEntry(currentNode.characterName, currentNode.dialogueText);
+        }
 
         // 文本显示完毕后，显示选项或自动继续
         if (currentNode.triggerMinigame)
@@ -202,6 +210,33 @@ public class DialogueManager : MonoBehaviour
     public bool GetStoryFlag(string flagName)
     {
         return storyFlags.ContainsKey(flagName) && storyFlags[flagName];
+    }
+
+    // 新增：获取所有剧情标记
+    public Dictionary<string, bool> GetAllStoryFlags()
+    {
+        return new Dictionary<string, bool>(storyFlags);
+    }
+
+    // 新增：恢复剧情标记
+    public void RestoreStoryFlags(Dictionary<string, bool> flags)
+    {
+        if (flags != null)
+        {
+            storyFlags = new Dictionary<string, bool>(flags);
+        }
+    }
+
+    // 新增：清除所有标记（新游戏时）
+    public void ClearAllFlags()
+    {
+        storyFlags.Clear();
+    }
+
+    // 新增：获取当前节点ID
+    public int GetCurrentNodeId()
+    {
+        return currentNodeId;
     }
 
     void Update()

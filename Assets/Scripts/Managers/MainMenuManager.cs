@@ -14,7 +14,9 @@ public class MainMenuManager : MonoBehaviour
     public GameObject settingsPanel;
 
     [Header("Scene Names")]
+    public string tvIntroSceneName = "TVIntroScene";  // 电视机开场场景
     public string dialogueSceneName = "DialogueScene";
+    public bool useTVIntro = true;  // 是否使用电视机开场
 
     void Start()
     {
@@ -95,8 +97,19 @@ public class MainMenuManager : MonoBehaviour
             DialogueManager.Instance.ClearAllFlags();
         }
 
-        // 加载对话场景
-        SceneManager.LoadScene(dialogueSceneName);
+        // 根据设置决定跳转到哪个场景
+        if (useTVIntro && !string.IsNullOrEmpty(tvIntroSceneName))
+        {
+            // 使用电视机开场
+            Debug.Log("加载电视机开场场景");
+            SceneManager.LoadScene(tvIntroSceneName);
+        }
+        else
+        {
+            // 直接进入对话场景
+            Debug.Log("直接加载对话场景");
+            SceneManager.LoadScene(dialogueSceneName);
+        }
     }
 
     void OnLoadGame()

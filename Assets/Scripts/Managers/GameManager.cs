@@ -11,6 +11,12 @@ public class GameManager : MonoBehaviour
 
     private int returnNodeId = -1; // 从小游戏返回时要显示的对话节点
     private int preMinigameNodeId = -1; // 小游戏触发前的对话节点（用于保存点）
+    
+    // 小游戏UI设置
+    private MinigameUISettings currentMinigameUI;
+    
+    // 特殊道具设置
+    private SpecialItem currentSpecialItem;
 
     void Awake()
     {
@@ -98,5 +104,59 @@ public class GameManager : MonoBehaviour
     public void SetPreMinigameNodeId(int nodeId)
     {
         preMinigameNodeId = nodeId;
+    }
+    
+    // UI设置传递
+    public void SetMinigameUISettings(MinigameUISettings settings)
+    {
+        currentMinigameUI = settings;
+    }
+    
+    public MinigameUISettings GetMinigameUISettings()
+    {
+        return currentMinigameUI ?? new MinigameUISettings();
+    }
+    
+    // 特殊道具设置
+    public void SetSpecialItem(SpecialItem item)
+    {
+        currentSpecialItem = item;
+    }
+    
+    public SpecialItem GetSpecialItem()
+    {
+        return currentSpecialItem;
+    }
+    
+    public void ClearSpecialItem()
+    {
+        currentSpecialItem = null;
+    }
+    
+    // 便捷方法：设置使用特殊道具
+    public void SetUseSpecialItem(bool use, SpecialItemType itemType, int appearOn)
+    {
+        if (use)
+        {
+            currentSpecialItem = new SpecialItem
+            {
+                itemType = itemType,
+                appearOnDumplingNumber = appearOn
+            };
+        }
+        else
+        {
+            currentSpecialItem = null;
+        }
+    }
+    
+    // 从小游戏返回对话（保持兼容性）
+    public void ReturnToDialogueFromMinigame()
+    {
+        // 清除特殊道具设置
+        ClearSpecialItem();
+        
+        // 返回对话场景
+        ReturnToDialogue();
     }
 }

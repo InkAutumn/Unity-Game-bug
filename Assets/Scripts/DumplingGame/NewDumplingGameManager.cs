@@ -8,7 +8,8 @@ public class NewDumplingGameManager : MonoBehaviour
     public enum GameMode
     {
         TargetCount,    // 目标数量模式：完成n个饺子后结束
-        TimedMode       // 计时模式：时间结束后统计
+        TimedMode,      // 计时模式：时间结束后统计
+        Tutorial        // 教学模式：不计分，分步提示
     }
 
     [Header("Game Mode")]
@@ -19,7 +20,8 @@ public class NewDumplingGameManager : MonoBehaviour
     [Header("References")]
     public DumplingMakingController makingController;
 
-    [Header("UI")]
+    [Header("UI References")]
+    public GameObject scorePanel;             // 计分面板
     public Text timerText;
     public Text scoreText;
     public Text perfectCountText;
@@ -29,6 +31,22 @@ public class NewDumplingGameManager : MonoBehaviour
     public Text scoreboardTitle;
     public Text scoreboardDetails;
     public Button returnButton;
+    
+    [Header("UI Display Settings")]
+    public bool showScoreUI = true;           // 是否显示计分UI
+    public bool showPerfectCount = true;      // 是否显示完美数量
+    public bool showGoodCount = true;         // 是否显示良好数量
+    public bool showFailedCount = true;       // 是否显示失败数量
+    public bool showTimer = true;             // 是否显示计时器
+    
+    [Header("Tutorial Settings")]
+    public bool isTutorialMode = false;       // 是否为教学模式
+    public string[] tutorialHints;            // 教学提示文本数组
+    
+    [Header("Special Items")]
+    public bool useSpecialItem = false;
+    public SpecialItemType specialItemType = SpecialItemType.None;
+    public int specialItemAppearOn = -1;      // -1表示最后一个饺子
 
     [Header("Scoring")]
     public int perfectScore = 100;
@@ -37,6 +55,8 @@ public class NewDumplingGameManager : MonoBehaviour
 
     private float currentTime;
     private bool gameActive = false;
+    private bool isPaused = false;
+    private int currentTutorialStep = 0;
 
     // 统计数据
     private int perfectDumplings = 0;
@@ -45,9 +65,30 @@ public class NewDumplingGameManager : MonoBehaviour
     private int totalScore = 0;
 
     private Dictionary<DumplingQuality, int> qualityCount = new Dictionary<DumplingQuality, int>();
+    
+    // 单例模式（方便其他脚本访问）
+    public static NewDumplingGameManager Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
+        // 从GameManager读取UI设置
+        LoadUISettings();
+        
+        // 从GameManager读取特殊道具设置
+        LoadSpecialItemSettings();
+        
         InitializeGame();
 
         if (makingController != null)
@@ -64,12 +105,19 @@ public class NewDumplingGameManager : MonoBehaviour
         {
             scoreboard.SetActive(false);
         }
+        
+        // 检查是否为教学模式
+        if (gameMode == GameMode.Tutorial || isTutorialMode)
+        {
+            SetupTutorialMode();
+        }
     }
 
     void InitializeGame()
     {
         currentTime = timeLimit;
         gameActive = true;
+        isPaused = false;
 
         perfectDumplings = 0;
         goodDumplings = 0;
@@ -82,7 +130,118 @@ public class NewDumplingGameManager : MonoBehaviour
         qualityCount[DumplingQuality.TooLittleWater] = 0;
         qualityCount[DumplingQuality.TooMuchWater] = 0;
 
+        UpdateUIVisibility();
         UpdateUI();
+    }
+    
+    void LoadUISettings()
+    {
+        if (GameManager.Instance != null)
+        {
+            MinigameUISettings settings = GameManager.Instance.GetMinigameUISettings();
+            
+            if (settings != null)
+            {
+                showScoreUI = settings.showScoreUI;
+                showPerfectCount = settings.showPerfectCount;
+                showGoodCount = settings.showGoodCount;
+                showFailedCount = settings.showFailedCount;
+                showTimer = settings.showTimer;
+            }
+        }
+    }
+    
+    void LoadSpecialItemSettings()
+    {
+        if (GameManager.Instance != null)
+        {
+            SpecialItem item = GameManager.Instance.GetSpecialItem();
+            
+            if (item != null && item.itemType != SpecialItemType.None)
+            {
+                useSpecialItem = true;
+                specialItemType = item.itemType;
+                specialItemAppearOn = item.appearOnDumplingNumber;
+            }
+        }
+    }
+    
+    void UpdateUIVisibility()
+    {
+        if (scorePanel != null)
+        {
+            scorePanel.SetActive(showScoreUI);
+        }
+        
+        if (perfectCountText != null)
+        {
+            perfectCountText.gameObject.SetActive(showPerfectCount);
+        }
+        
+        if (goodCountText != null)
+        {
+            goodCountText.gameObject.SetActive(showGoodCount);
+        }
+        
+        if (failedCountText != null)
+        {
+            failedCountText.gameObject.SetActive(showFailedCount);
+        }
+        
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(showTimer);
+        }
+    }
+    
+    void SetupTutorialMode()
+    {
+        // 隐藏所有计分UI
+        showScoreUI = false;
+        showPerfectCount = false;
+        showGoodCount = false;
+        showFailedCount = false;
+        showTimer = false;
+        
+        UpdateUIVisibility();
+        
+        currentTutorialStep = 0;
+    }
+    
+    public void OnTutorialStepCompleted()
+    {
+        currentTutorialStep++;
+        
+        if (currentTutorialStep >= tutorialHints.Length)
+        {
+            // 教学完成
+            OnTutorialCompleted();
+        }
+    }
+    
+    void OnTutorialCompleted()
+    {
+        gameActive = false;
+        
+        // 延迟返回
+        Invoke("ReturnToDialogue", 1.5f);
+    }
+    
+    public void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0;
+    }
+    
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1;
+    }
+    
+    public int GetCompletedDumplingCount()
+    {
+        return perfectDumplings + goodDumplings + failedDumplings;
     }
 
     void Update()

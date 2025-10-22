@@ -1528,6 +1528,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868222603}
   m_CullTransparentMesh: 1
+--- !u!1 &872534915 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1982510675170162099, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+  m_PrefabInstance: {fileID: 3844156763905157738}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1096919415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,12 +1980,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99c6faa0c9262ba449ddf8e5a2b21bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newGameButton: {fileID: 0}
-  loadGameButton: {fileID: 0}
-  settingsButton: {fileID: 0}
-  quitButton: {fileID: 0}
-  settingsPanel: {fileID: 0}
+  newGameButton: {fileID: 1579108183}
+  loadGameButton: {fileID: 360001919}
+  settingsButton: {fileID: 1824863435}
+  quitButton: {fileID: 14804647}
+  settingsPanel: {fileID: 872534915}
+  tvIntroSceneName: TVIntroScene
   dialogueSceneName: DialogueScene
+  useTVIntro: 1
 --- !u!4 &1815447565
 Transform:
   m_ObjectHideFlags: 0
@@ -2282,6 +2289,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -40
       objectReference: {fileID: 0}
+    - target: {fileID: 1846535919291144350, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1846535919291144350, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1815447564}
+    - target: {fileID: 1846535919291144350, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1846535919291144350, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 1846535919291144350, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1982510675170162099, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
       propertyPath: m_Name
       value: SettingsPanel
@@ -2309,6 +2336,26 @@ PrefabInstance:
     - target: {fileID: 1999918233484446596, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096165141198369289, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096165141198369289, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1815447564}
+    - target: {fileID: 2096165141198369289, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096165141198369289, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2096165141198369289, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: CloseSettings()
       objectReference: {fileID: 0}
     - target: {fileID: 3702932024852323822, guid: e0fbe4689be0c4848b3db8822b37d446, type: 3}
       propertyPath: m_AnchorMax.y

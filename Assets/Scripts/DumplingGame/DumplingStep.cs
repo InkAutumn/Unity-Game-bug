@@ -29,6 +29,10 @@ public class DumplingState
     public bool hasFilling = false;
     public bool isWrapped = false;
     public DumplingQuality quality = DumplingQuality.Perfect;
+    
+    // 特殊道具支持
+    public bool hasSpecialItem = false;
+    public SpecialItemType specialItemType = SpecialItemType.None;
 
     public void Reset()
     {
@@ -38,5 +42,7 @@ public class DumplingState
         hasFilling = false;
         isWrapped = false;
         quality = DumplingQuality.Perfect;
+        hasSpecialItem = false;
+        specialItemType = SpecialItemType.None;
     }
 }

@@ -32,11 +32,25 @@ public class DumplingMakingController : MonoBehaviour
     public Sprite waterHandsSprite;          // 蘸水后的手部
     public Sprite spoonHandsSprite;          // 拿勺子的手部
 
+    [Header("Special Items")]
+    public GameObject coinPrefab;            // 硬币预制体
+    public Transform coinSpawnPosition;      // 硬币生成位置（场景中某个位置）
+    
     private DumplingMakingStep currentStep = DumplingMakingStep.PlaceDough;
     private DumplingState currentDumpling = new DumplingState();
     private bool isDraggingOnDough = false;
     private bool hasSpoon = false;
     private bool spoonHasFilling = false;
+    
+    // 特殊硬币相关
+    private GameObject coinObject;           // 场景中的硬币对象
+    private bool hasCoin = false;            // 是否拿着硬币
+    private bool coinPlacedOnDough = false;  // 硬币是否已放在饺子皮上
+    private bool isSpecialCoinGame = false;  // 是否为特殊硬币游戏
+    private int completedDumplingCount = 0;
+    
+    // 游戏内对话管理器
+    private DumplingGameDialogueManager gameDialogueManager;
 
     public event Action<DumplingQuality> OnDumplingCompleted;
 
@@ -49,10 +63,66 @@ public class DumplingMakingController : MonoBehaviour
         {
             fingerWaterIndicator.enabled = false;
         }
+        
+        // 查找游戏内对话管理器
+        gameDialogueManager = FindObjectOfType<DumplingGameDialogueManager>();
+        
+        // 检查是否有特殊道具设置
+        CheckForSpecialItem();
+    }
+    
+    void CheckForSpecialItem()
+    {
+        if (GameManager.Instance != null)
+        {
+            SpecialItem item = GameManager.Instance.GetSpecialItem();
+            
+            if (item != null && item.itemType == SpecialItemType.Coin)
+            {
+                // 这是特殊硬币游戏
+                isSpecialCoinGame = true;
+                
+                // 立即生成硬币
+                SpawnCoin();
+                
+                Debug.Log("特殊硬币游戏已启动");
+            }
+        }
+    }
+    
+    void SpawnCoin()
+    {
+        if (coinPrefab == null)
+        {
+            Debug.LogError("硬币预制体未设置！");
+            return;
+        }
+        
+        Vector3 spawnPos = coinSpawnPosition != null ? 
+            coinSpawnPosition.position : 
+            new Vector3(-200, 200, 0); // 默认位置
+        
+        coinObject = Instantiate(coinPrefab, spawnPos, Quaternion.identity);
+        
+        // 添加可点击的Collider（如果没有）
+        if (coinObject.GetComponent<Collider2D>() == null)
+        {
+            coinObject.AddComponent<CircleCollider2D>();
+        }
+        
+        Debug.Log("硬币已生成在场景中");
     }
 
     void Update()
     {
+        // 特殊硬币游戏的输入处理（优先）
+        if (isSpecialCoinGame && currentDumpling.hasDough && !coinPlacedOnDough)
+        {
+            HandleCoinInteraction();
+            UpdateUI();
+            return; // 等待玩家放置硬币后再继续
+        }
+        
         // 处理当前步骤的输入
         switch (currentStep)
         {
@@ -103,8 +173,79 @@ public class DumplingMakingController : MonoBehaviour
         {
             currentDoughImage.enabled = true;
             currentDumpling.hasDough = true;
+            
+            // 特殊硬币游戏：如果还没放硬币，需要先放硬币
+            if (isSpecialCoinGame && !coinPlacedOnDough)
+            {
+                UpdateStepHintForCoin("现在点击硬币，将它放在饺子皮上");
+                // 不进入下一步，等待玩家放硬币
+                return;
+            }
+            
             AdvanceToNextStep();
         }
+    }
+    
+    void UpdateStepHintForCoin(string hint)
+    {
+        if (stepHintText != null)
+        {
+            stepHintText.text = hint;
+        }
+    }
+    
+    // 特殊硬币游戏的输入处理
+    void HandleCoinInteraction()
+    {
+        if (!isSpecialCoinGame) return;
+        
+        if (InputHandler.GetInputDown() && !InputHandler.IsPointerOverUI())
+        {
+            Ray ray = Camera.main.ScreenPointToRay(InputHandler.GetInputPosition());
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+            
+            if (hit.collider != null)
+            {
+                // 点击硬币拾取
+                if (!hasCoin && hit.collider.gameObject == coinObject)
+                {
+                    PickUpCoin();
+                }
+                // 点击饺子皮放置硬币
+                else if (hasCoin && hit.collider.gameObject == currentDoughImage.gameObject)
+                {
+                    PlaceCoinOnDough();
+                }
+            }
+        }
+    }
+    
+    void PickUpCoin()
+    {
+        hasCoin = true;
+        
+        // 隐藏场景中的硬币（实际是移到屏幕外或销毁）
+        if (coinObject != null)
+        {
+            coinObject.SetActive(false);
+        }
+        
+        UpdateStepHintForCoin("点击饺子皮，将硬币放在上面");
+        Debug.Log("拾取硬币");
+    }
+    
+    void PlaceCoinOnDough()
+    {
+        if (!hasCoin || !currentDumpling.hasDough) return;
+        
+        coinPlacedOnDough = true;
+        hasCoin = false;
+        
+        // 可以在饺子皮上显示硬币图标
+        Debug.Log("硬币已放在饺子皮上");
+        
+        // 继续正常的包饺子流程
+        AdvanceToNextStep();
     }
 
     // === 步骤2：蘸水 ===
@@ -296,6 +437,38 @@ public class DumplingMakingController : MonoBehaviour
 
     void CompleteDumpling()
     {
+        // 增加完成计数
+        completedDumplingCount++;
+        
+        // 特殊硬币游戏：包好硬币饺子后立即返回对话场景
+        if (isSpecialCoinGame && coinPlacedOnDough)
+        {
+            Debug.Log("硬币饺子包好了！返回对话场景");
+            
+            // 设置剧情标记：硬币饺子已完成
+            if (DialogueManager.Instance != null)
+            {
+                DialogueManager.Instance.SetStoryFlag("coinDumplingCompleted", true);
+            }
+            
+            // 清理硬币对象
+            if (coinObject != null)
+            {
+                Destroy(coinObject);
+            }
+            
+            // 触发完成事件（让GameManager知道）
+            if (OnDumplingCompleted != null)
+            {
+                OnDumplingCompleted.Invoke(DumplingQuality.Perfect); // 硬币饺子视为完美
+            }
+            
+            // 延迟0.5秒后返回对话场景
+            Invoke("ReturnToDialogue", 0.5f);
+            return;
+        }
+        
+        // 普通游戏：继续正常流程
         // 触发完成事件
         if (OnDumplingCompleted != null)
         {
@@ -304,6 +477,19 @@ public class DumplingMakingController : MonoBehaviour
 
         // 重置状态，准备下一个饺子
         ResetForNextDumpling();
+    }
+    
+    void ReturnToDialogue()
+    {
+        // 通过GameManager返回对话场景
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ReturnToDialogue();
+        }
+        else
+        {
+            Debug.LogError("GameManager未找到，无法返回对话场景");
+        }
     }
 
     void ResetForNextDumpling()
@@ -319,6 +505,12 @@ public class DumplingMakingController : MonoBehaviour
 
         UpdateStepHint();
         UpdateHandsSprite();
+    }
+    
+    // 公共方法：获取已完成饺子数量
+    public int GetCompletedCount()
+    {
+        return completedDumplingCount;
     }
 
     // === 辅助方法 ===

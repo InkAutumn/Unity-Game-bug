@@ -119,6 +119,19 @@ public class DialogueManager : MonoBehaviour
         // 文本显示完毕后，显示选项或自动继续
         if (currentNode.triggerMinigame)
         {
+            // 传递UI设置到GameManager
+            if (GameManager.Instance != null && currentNode.minigameUI != null)
+            {
+                GameManager.Instance.SetMinigameUISettings(currentNode.minigameUI);
+            }
+            
+            // 传递特殊道具设置到GameManager
+            if (GameManager.Instance != null && currentNode.specialItem != null && 
+                currentNode.specialItem.itemType != SpecialItemType.None)
+            {
+                GameManager.Instance.SetSpecialItem(currentNode.specialItem);
+            }
+            
             // 触发小游戏
             if (OnMinigameTriggered != null)
             {

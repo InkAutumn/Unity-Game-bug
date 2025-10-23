@@ -12,6 +12,10 @@ public class SaveData
     public int preMinigameNodeId = -1;  // 小游戏前的对话节点ID
     public List<DialogueHistoryManager.DialogueHistoryEntry> dialogueHistory;
     public DateTime saveTime;
+    
+    // 成就系统数据
+    public List<int> unlockedAchievements = new List<int>();  // 已解锁的成就ID列表
+    public int totalPerfectDumplings = 0;                      // 完美饺子总数
 }
 
 public class SaveLoadManager : MonoBehaviour
@@ -55,6 +59,13 @@ public class SaveLoadManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             data.preMinigameNodeId = GameManager.Instance.GetPreMinigameNodeId();
+        }
+
+        // 保存成就数据
+        if (AchievementManager.Instance != null)
+        {
+            data.unlockedAchievements = AchievementManager.Instance.GetUnlockedAchievementIds();
+            data.totalPerfectDumplings = AchievementManager.Instance.GetTotalPerfectDumplings();
         }
 
         data.saveTime = DateTime.Now;
@@ -112,6 +123,13 @@ public class SaveLoadManager : MonoBehaviour
             if (DialogueHistoryManager.Instance != null && data != null)
             {
                 DialogueHistoryManager.Instance.LoadHistoryFromSave(data.dialogueHistory);
+            }
+
+            // 恢复成就数据
+            if (AchievementManager.Instance != null && data != null)
+            {
+                AchievementManager.Instance.LoadUnlockedAchievements(data.unlockedAchievements);
+                AchievementManager.Instance.SetTotalPerfectDumplings(data.totalPerfectDumplings);
             }
 
             Debug.Log("游戏已加载自: " + saveFilePath);

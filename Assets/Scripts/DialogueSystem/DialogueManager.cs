@@ -218,6 +218,12 @@ public class DialogueManager : MonoBehaviour
     public void SetStoryFlag(string flagName, bool value)
     {
         storyFlags[flagName] = value;
+        
+        // 检查是否触发成就解锁
+        if (value && AchievementManager.Instance != null)
+        {
+            AchievementManager.Instance.TryUnlockAchievement(flagName);
+        }
     }
 
     public bool GetStoryFlag(string flagName)

@@ -7,11 +7,15 @@ public class MainMenuManager : MonoBehaviour
     [Header("UI References")]
     public Button newGameButton;
     public Button loadGameButton;
+    public Button achievementButton;      // 留影册按钮
     public Button settingsButton;
     public Button quitButton;
 
     [Header("Panels")]
     public GameObject settingsPanel;
+
+    [Header("Achievement System")]
+    public AchievementUIManager achievementUIManager;  // 留影册UI管理器
 
     [Header("Scene Names")]
     public string tvIntroSceneName = "TVIntroScene";  // 电视机开场场景
@@ -31,6 +35,11 @@ public class MainMenuManager : MonoBehaviour
             loadGameButton.onClick.AddListener(OnLoadGame);
             // 检查是否存在存档，决定按钮是否可用
             UpdateLoadGameButton();
+        }
+
+        if (achievementButton != null)
+        {
+            achievementButton.onClick.AddListener(OnAchievement);
         }
 
         if (settingsButton != null)
@@ -171,6 +180,27 @@ public class MainMenuManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    void OnAchievement()
+    {
+        Debug.Log("打开留影册");
+
+        // 播放点击音效
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX("buttonClick");
+        }
+
+        // 打开留影册面板
+        if (achievementUIManager != null)
+        {
+            achievementUIManager.OpenAchievementPanel();
+        }
+        else
+        {
+            Debug.LogWarning("AchievementUIManager未设置！");
+        }
     }
 
     // 关闭设置面板（由SettingsPanel中的返回按钮调用）

@@ -271,6 +271,12 @@ public class NewDumplingGameManager : MonoBehaviour
             case DumplingQuality.Perfect:
                 perfectDumplings++;
                 totalScore += perfectScore;
+                
+                // 成就系统：统计完美饺子
+                if (AchievementManager.Instance != null)
+                {
+                    AchievementManager.Instance.AddPerfectDumpling();
+                }
                 break;
 
             case DumplingQuality.Good:

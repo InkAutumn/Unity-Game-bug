@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 包饺子游戏内对话管理器
+/// 支持在游戏不同阶段插入对话
+/// 兼容SimpleDumplingGameManager
+/// </summary>
 public class DumplingGameDialogueManager : MonoBehaviour
 {
     [Header("UI References")]
@@ -19,6 +24,10 @@ public class DumplingGameDialogueManager : MonoBehaviour
     private string currentDialogue = "";
     private int currentCharIndex = 0;
     private List<DialogueChoice> currentChoices;
+    private System.Action onDialogueComplete; // 对话完成回调
+    
+    // 追踪已播放的对话（避免重复）
+    private HashSet<string> playedDialogues = new HashSet<string>();
     
     void Start()
     {
@@ -33,16 +42,13 @@ public class DumplingGameDialogueManager : MonoBehaviour
         }
     }
     
-    // 显示对话（带可选的选项）
-    public void ShowDialogue(string characterName, string dialogue, List<DialogueChoice> choices = null)
+    /// <summary>
+    /// 显示对话（带可选的选项和完成回调）
+    /// </summary>
+    public void ShowDialogue(string characterName, string dialogue, List<DialogueChoice> choices = null, System.Action onComplete = null)
     {
-        // 暂停游戏
-        if (NewDumplingGameManager.Instance != null)
-        {
-            NewDumplingGameManager.Instance.PauseGame();
-        }
-        
         isDialogueActive = true;
+        onDialogueComplete = onComplete;
         
         if (dialoguePanel != null)
         {
@@ -109,7 +115,7 @@ public class DumplingGameDialogueManager : MonoBehaviour
         {
             if (choiceButtonPrefab == null)
             {
-                Debug.LogError("选项按钮预制体未设置！");
+                Debug.LogError("[DumplingGameDialogue] 选项按钮预制体未设置！");
                 continue;
             }
             
@@ -133,7 +139,7 @@ public class DumplingGameDialogueManager : MonoBehaviour
     
     void OnChoiceSelected(DialogueChoice choice)
     {
-        Debug.Log("玩家选择：" + choice.choiceText);
+        Debug.Log("[DumplingGameDialogue] 玩家选择：" + choice.choiceText);
         
         // 播放音效
         if (AudioManager.Instance != null)
@@ -149,12 +155,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
         
         // 关闭对话
         CloseDialogue();
-        
-        // 继续游戏
-        if (NewDumplingGameManager.Instance != null)
-        {
-            NewDumplingGameManager.Instance.ResumeGame();
-        }
     }
     
     public void CloseDialogue()
@@ -179,9 +179,18 @@ public class DumplingGameDialogueManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
         }
+        
+        // 调用完成回调
+        if (onDialogueComplete != null)
+        {
+            onDialogueComplete.Invoke();
+            onDialogueComplete = null;
+        }
     }
     
-    // 点击对话框继续（无选项时）
+    /// <summary>
+    /// 点击对话框继续（无选项时）
+    /// </summary>
     public void OnDialogueClick()
     {
         if (!isDialogueActive) return;
@@ -200,12 +209,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
         {
             // 无选项，直接关闭对话
             CloseDialogue();
-            
-            // 恢复游戏
-            if (NewDumplingGameManager.Instance != null)
-            {
-                NewDumplingGameManager.Instance.ResumeGame();
-            }
         }
     }
     
@@ -216,5 +219,40 @@ public class DumplingGameDialogueManager : MonoBehaviour
         {
             OnDialogueClick();
         }
+    }
+    
+    /// <summary>
+    /// 检查对话是否已播放（用于playOnce功能）
+    /// </summary>
+    public bool HasPlayed(string dialogueKey)
+    {
+        return playedDialogues.Contains(dialogueKey);
+    }
+    
+    /// <summary>
+    /// 标记对话已播放
+    /// </summary>
+    public void MarkAsPlayed(string dialogueKey)
+    {
+        if (!playedDialogues.Contains(dialogueKey))
+        {
+            playedDialogues.Add(dialogueKey);
+        }
+    }
+    
+    /// <summary>
+    /// 重置播放记录（新游戏或重新开始时调用）
+    /// </summary>
+    public void ResetPlayedDialogues()
+    {
+        playedDialogues.Clear();
+    }
+    
+    /// <summary>
+    /// 获取对话唯一键（用于追踪）
+    /// </summary>
+    public static string GetDialogueKey(MinigameDialogueTrigger trigger, int count)
+    {
+        return string.Format("{0}_{1}", trigger.ToString(), count);
     }
 }

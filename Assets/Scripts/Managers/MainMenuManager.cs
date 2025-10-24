@@ -106,6 +106,15 @@ public class MainMenuManager : MonoBehaviour
             DialogueManager.Instance.ClearAllFlags();
         }
 
+        // ====== ChapterManager集成：设置新游戏标记 ======
+        // 在场景切换后，DialogueScene的初始化脚本会检查这个标记
+        // 然后调用DialogueManager.Instance.StartNewGame()
+        // StartNewGame()会自动从ChapterManager获取第一章并开始游戏
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.isStartingNewGame = true;
+        }
+
         // 根据设置决定跳转到哪个场景
         if (useTVIntro && !string.IsNullOrEmpty(tvIntroSceneName))
         {

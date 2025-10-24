@@ -12,11 +12,8 @@ public class GameManager : MonoBehaviour
     private int returnNodeId = -1; // 从小游戏返回时要显示的对话节点
     private int preMinigameNodeId = -1; // 小游戏触发前的对话节点（用于保存点）
     
-    // 小游戏UI设置
-    private MinigameUISettings currentMinigameUI;
-    
-    // 特殊道具设置
-    private SpecialItem currentSpecialItem;
+    // ====== ChapterManager集成：新游戏标记 ======
+    public bool isStartingNewGame = false; // 标记是否正在开始新游戏
 
     void Awake()
     {
@@ -52,8 +49,16 @@ public class GameManager : MonoBehaviour
             {
                 dialogueManager.OnMinigameTriggered += OnMinigameTriggered;
 
+                // ====== ChapterManager集成：检查新游戏标记 ======
+                if (isStartingNewGame)
+                {
+                    // 开始新游戏，自动从第一章开始
+                    dialogueManager.StartNewGame();
+                    isStartingNewGame = false; // 重置标记
+                    Debug.Log("[GameManager] 已启动新游戏");
+                }
                 // 如果有返回节点，继续对话
-                if (returnNodeId >= 0)
+                else if (returnNodeId >= 0)
                 {
                     dialogueManager.ShowNode(returnNodeId);
                     returnNodeId = -1;
@@ -104,59 +109,5 @@ public class GameManager : MonoBehaviour
     public void SetPreMinigameNodeId(int nodeId)
     {
         preMinigameNodeId = nodeId;
-    }
-    
-    // UI设置传递
-    public void SetMinigameUISettings(MinigameUISettings settings)
-    {
-        currentMinigameUI = settings;
-    }
-    
-    public MinigameUISettings GetMinigameUISettings()
-    {
-        return currentMinigameUI ?? new MinigameUISettings();
-    }
-    
-    // 特殊道具设置
-    public void SetSpecialItem(SpecialItem item)
-    {
-        currentSpecialItem = item;
-    }
-    
-    public SpecialItem GetSpecialItem()
-    {
-        return currentSpecialItem;
-    }
-    
-    public void ClearSpecialItem()
-    {
-        currentSpecialItem = null;
-    }
-    
-    // 便捷方法：设置使用特殊道具
-    public void SetUseSpecialItem(bool use, SpecialItemType itemType, int appearOn)
-    {
-        if (use)
-        {
-            currentSpecialItem = new SpecialItem
-            {
-                itemType = itemType,
-                appearOnDumplingNumber = appearOn
-            };
-        }
-        else
-        {
-            currentSpecialItem = null;
-        }
-    }
-    
-    // 从小游戏返回对话（保持兼容性）
-    public void ReturnToDialogueFromMinigame()
-    {
-        // 清除特殊道具设置
-        ClearSpecialItem();
-        
-        // 返回对话场景
-        ReturnToDialogue();
     }
 }

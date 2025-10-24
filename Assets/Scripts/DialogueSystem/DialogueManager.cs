@@ -46,9 +46,83 @@ public class DialogueManager : MonoBehaviour
         ShowNode(dialogue.startNodeId);
     }
 
+    // ====== 新增：根据节点ID自动加载对话（ChapterManager集成）======
+    public void StartDialogueFromNode(int nodeId)
+    {
+        // 使用ChapterManager自动查找对应章节
+        if (ChapterManager.Instance != null)
+        {
+            DialogueData chapter = ChapterManager.Instance.GetChapterByNodeId(nodeId);
+            
+            if (chapter != null)
+            {
+                currentDialogue = chapter;
+                ShowNode(nodeId);
+            }
+            else
+            {
+                Debug.LogError("无法找到包含节点" + nodeId + "的章节！");
+            }
+        }
+        else
+        {
+            Debug.LogError("ChapterManager未初始化！");
+        }
+    }
+    
+    // ====== 新增：开始新游戏（从第一章开始）======
+    public void StartNewGame()
+    {
+        // 清除所有剧情标记
+        ClearAllFlags();
+        
+        // 获取第一章
+        if (ChapterManager.Instance != null)
+        {
+            DialogueData firstChapter = ChapterManager.Instance.GetFirstChapter();
+            
+            if (firstChapter != null)
+            {
+                StartDialogue(firstChapter);
+                Debug.Log("[DialogueManager] 开始新游戏");
+            }
+            else
+            {
+                Debug.LogError("无法开始新游戏：未找到第一章！");
+            }
+        }
+        else
+        {
+            Debug.LogError("ChapterManager未初始化！");
+        }
+    }
+
     public void ShowNode(int nodeId)
     {
-        currentNode = currentDialogue.GetNode(nodeId);
+        // 尝试在当前章节查找节点
+        DialogueNode node = null;
+        if (currentDialogue != null)
+        {
+            node = currentDialogue.GetNode(nodeId);
+        }
+        
+        // 如果当前章节找不到，尝试切换章节
+        if (node == null && ChapterManager.Instance != null)
+        {
+            Debug.Log("[DialogueManager] 节点" + nodeId + "不在当前章节，尝试切换章节...");
+            
+            DialogueData newChapter = ChapterManager.Instance.GetChapterByNodeId(nodeId);
+            if (newChapter != null)
+            {
+                currentDialogue = newChapter;
+                node = currentDialogue.GetNode(nodeId);
+                
+                string chapterName = ChapterManager.Instance.GetChapterName(nodeId);
+                Debug.Log("[DialogueManager] 已切换到章节：" + chapterName);
+            }
+        }
+        
+        currentNode = node;
         currentNodeId = nodeId;
 
         if (currentNode == null)
@@ -119,19 +193,6 @@ public class DialogueManager : MonoBehaviour
         // 文本显示完毕后，显示选项或自动继续
         if (currentNode.triggerMinigame)
         {
-            // 传递UI设置到GameManager
-            if (GameManager.Instance != null && currentNode.minigameUI != null)
-            {
-                GameManager.Instance.SetMinigameUISettings(currentNode.minigameUI);
-            }
-            
-            // 传递特殊道具设置到GameManager
-            if (GameManager.Instance != null && currentNode.specialItem != null && 
-                currentNode.specialItem.itemType != SpecialItemType.None)
-            {
-                GameManager.Instance.SetSpecialItem(currentNode.specialItem);
-            }
-            
             // 触发小游戏
             if (OnMinigameTriggered != null)
             {

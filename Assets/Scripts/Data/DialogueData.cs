@@ -2,39 +2,29 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 小游戏UI显示设置
+// 小游戏难度
 [Serializable]
-public class MinigameUISettings
+public enum MinigameDifficulty
 {
-    public bool showScoreUI = true;
-    public bool showPerfectCount = true;
-    public bool showGoodCount = true;
-    public bool showFailedCount = true;
-    public bool showTimer = true;
+    Easy,    // 简单（童年）
+    Normal,  // 普通（青春期）
+    Hard     // 困难（工作期）
 }
 
-// 特殊道具类型
+// 小游戏对话触发时机
 [Serializable]
-public enum SpecialItemType
+public enum MinigameDialogueTrigger
 {
-    None,
-    Coin,           // 硬币
-    Peanut,         // 花生
-    DateFruit       // 红枣
-}
-
-// 特殊道具配置
-[Serializable]
-public class SpecialItem
-{
-    public SpecialItemType itemType = SpecialItemType.None;
-    public string itemName = "";
-    public int appearOnDumplingNumber = -1;  // -1表示最后一个饺子
+    OnGameStart,        // 游戏开始时（进入准备阶段）
+    OnDumplingComplete, // 饺子完成后（可指定第几个）
+    OnFail,            // 失败时
+    OnAllComplete      // 全部完成时
 }
 
 [Serializable]
 public class DialogueNode
 {
+    [Header("Basic Settings")]
     public int nodeId;
     public string characterName;
     public string dialogueText;
@@ -45,10 +35,28 @@ public class DialogueNode
     
     [Header("Minigame Settings")]
     public bool triggerMinigame = false; // 是否触发包饺子小游戏
-    public int minigameTargetCount = 0; // 小游戏目标数量（0表示计时模式）
-    public float minigameTimeLimit = 60f; // 小游戏时间限制
-    public MinigameUISettings minigameUI = new MinigameUISettings(); // UI显示设置
-    public SpecialItem specialItem = new SpecialItem(); // 特殊道具配置
+    public int minigameTargetCount = 5; // 目标饺子数量
+    public MinigameDifficulty difficulty = MinigameDifficulty.Normal; // 游戏难度
+    
+    [Header("Lucky Dumpling")]
+    public bool enableLuckyDumpling = false; // 启用幸运饺子
+    public int luckyDumplingPosition = 5; // 幸运饺子位置（第几个饺子）
+    
+    [Header("In-Game Dialogues")]
+    public List<MinigameDialogue> minigameDialogues = new List<MinigameDialogue>(); // 游戏内对话列表
+}
+
+// 小游戏内对话配置
+[Serializable]
+public class MinigameDialogue
+{
+    public MinigameDialogueTrigger trigger = MinigameDialogueTrigger.OnGameStart; // 触发时机
+    public int triggerAtCount = -1; // 当trigger为OnDumplingComplete时指定第几个（-1表示任意）
+    public string characterName = ""; // 角色名
+    public string dialogueText = ""; // 对话内容
+    public List<DialogueChoice> choices = new List<DialogueChoice>(); // 可选的选项
+    public bool pauseGame = true; // 是否暂停游戏
+    public bool playOnce = true; // 是否只播放一次
 }
 
 [Serializable]

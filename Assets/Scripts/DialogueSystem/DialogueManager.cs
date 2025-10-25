@@ -15,6 +15,16 @@ public class DialogueManager : MonoBehaviour
     public Image backgroundImage;
     public GameObject choicesPanel;
     public GameObject choiceButtonPrefab;
+    public Image dialogueBoxImage; // 对话框背景图
+
+    [Header("Dialogue Box Styles")]
+    public Sprite narratorDialogueBox; // 旁白对话框（图一：无角色名）
+    public Sprite characterDialogueBox; // 角色对话框（图二：有角色名）
+    
+    [Header("UI Buttons")]
+    public Button backButton; // 返回主界面按钮（左上角）
+    public Button loadButton; // 加载存档按钮（右上角）
+    public Button historyButton; // 历史对话按钮（右上角）
 
     [Header("Settings")]
     public float textSpeed = 0.05f;
@@ -39,6 +49,25 @@ public class DialogueManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    
+    void Start()
+    {
+        // 绑定按钮事件
+        if (backButton != null)
+        {
+            backButton.onClick.AddListener(OnBackButtonClicked);
+        }
+        
+        if (loadButton != null)
+        {
+            loadButton.onClick.AddListener(OnLoadButtonClicked);
+        }
+        
+        if (historyButton != null)
+        {
+            historyButton.onClick.AddListener(OnHistoryButtonClicked);
+        }
+    }
 
     public void StartDialogue(DialogueData dialogue)
     {
@@ -46,7 +75,6 @@ public class DialogueManager : MonoBehaviour
         ShowNode(dialogue.startNodeId);
     }
 
-    // ====== 新增：根据节点ID自动加载对话（ChapterManager集成）======
     public void StartDialogueFromNode(int nodeId)
     {
         // 使用ChapterManager自动查找对应章节
@@ -70,7 +98,6 @@ public class DialogueManager : MonoBehaviour
         }
     }
     
-    // ====== 新增：开始新游戏（从第一章开始）======
     public void StartNewGame()
     {
         // 清除所有剧情标记
@@ -131,10 +158,33 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        // 更新角色名称
+        // 更新角色名称和对话框样式
+        bool isNarrator = string.IsNullOrEmpty(currentNode.characterName);
+        
         if (characterNameText != null)
         {
-            characterNameText.text = currentNode.characterName;
+            if (isNarrator)
+            {
+                characterNameText.gameObject.SetActive(false);
+            }
+            else
+            {
+                characterNameText.gameObject.SetActive(true);
+                characterNameText.text = currentNode.characterName;
+            }
+        }
+        
+        // 切换对话框背景
+        if (dialogueBoxImage != null)
+        {
+            if (isNarrator && narratorDialogueBox != null)
+            {
+                dialogueBoxImage.sprite = narratorDialogueBox;
+            }
+            else if (!isNarrator && characterDialogueBox != null)
+            {
+                dialogueBoxImage.sprite = characterDialogueBox;
+            }
         }
 
         // 更新手部图片
@@ -162,13 +212,14 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        // 显示对话文本
         ClearChoices();
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
         }
         typingCoroutine = StartCoroutine(TypeText(currentNode.dialogueText));
+        
+        CheckAutoSave();
     }
 
     IEnumerator TypeText(string text)
@@ -190,10 +241,8 @@ public class DialogueManager : MonoBehaviour
             DialogueHistoryManager.Instance.AddDialogueEntry(currentNode.characterName, currentNode.dialogueText);
         }
 
-        // 文本显示完毕后，显示选项或自动继续
         if (currentNode.triggerMinigame)
         {
-            // 触发小游戏
             if (OnMinigameTriggered != null)
             {
                 OnMinigameTriggered.Invoke();
@@ -205,8 +254,6 @@ public class DialogueManager : MonoBehaviour
         }
         else if (currentNode.nextNodeId >= 0)
         {
-            // 等待玩家点击继续
-            // 可以在Update中处理点击事件
         }
     }
 
@@ -216,12 +263,11 @@ public class DialogueManager : MonoBehaviour
 
         foreach (DialogueChoice choice in currentNode.choices)
         {
-            // 检查是否满足条件
             if (!string.IsNullOrEmpty(choice.requirementFlag))
             {
                 if (!storyFlags.ContainsKey(choice.requirementFlag) || !storyFlags[choice.requirementFlag])
                 {
-                    continue; // 跳过不满足条件的选项
+                    continue; 
                 }
             }
 
@@ -257,7 +303,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (isTyping)
         {
-            // 快进文本显示
             if (typingCoroutine != null)
             {
                 StopCoroutine(typingCoroutine);
@@ -280,7 +325,6 @@ public class DialogueManager : MonoBehaviour
     {
         storyFlags[flagName] = value;
         
-        // 检查是否触发成就解锁
         if (value && AchievementManager.Instance != null)
         {
             AchievementManager.Instance.TryUnlockAchievement(flagName);
@@ -292,13 +336,11 @@ public class DialogueManager : MonoBehaviour
         return storyFlags.ContainsKey(flagName) && storyFlags[flagName];
     }
 
-    // 新增：获取所有剧情标记
     public Dictionary<string, bool> GetAllStoryFlags()
     {
         return new Dictionary<string, bool>(storyFlags);
     }
 
-    // 新增：恢复剧情标记
     public void RestoreStoryFlags(Dictionary<string, bool> flags)
     {
         if (flags != null)
@@ -307,21 +349,91 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    // 新增：清除所有标记（新游戏时）
     public void ClearAllFlags()
     {
         storyFlags.Clear();
     }
 
-    // 新增：获取当前节点ID
     public int GetCurrentNodeId()
     {
         return currentNodeId;
     }
+    
+    public DialogueNode GetCurrentNode()
+    {
+        return currentNode;
+    }
+    
+    
+    /// <summary>
+    /// 返回主界面按钮点击
+    /// </summary>
+    private void OnBackButtonClicked()
+    {
+        Debug.Log("[DialogueManager] 返回主界面");
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ReturnToDialogue(-1);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        }
+    }
+    
+    /// <summary>
+    /// 加载存档按钮点击
+    /// </summary>
+    private void OnLoadButtonClicked()
+    {
+        Debug.Log("[DialogueManager] 加载最近存档");
+        
+        if (SaveLoadManager.Instance != null)
+        {
+            SaveLoadManager.Instance.LoadLatestSave();
+        }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] SaveLoadManager未找到");
+        }
+    }
+    
+    /// <summary>
+    /// 历史对话按钮点击
+    /// </summary>
+    private void OnHistoryButtonClicked()
+    {
+        Debug.Log("[DialogueManager] 打开历史对话");
+        
+        if (DialogueHistoryManager.Instance != null)
+        {
+            DialogueHistoryManager.Instance.ToggleHistoryPanel();
+        }
+        else
+        {
+            Debug.LogWarning("[DialogueManager] DialogueHistoryManager未找到");
+        }
+    }
+    
+    
+    /// <summary>
+    /// 检查并执行自动存档
+    /// </summary>
+    private void CheckAutoSave()
+    {
+        if (currentNode != null && currentNode.autoSaveAtThisNode)
+        {
+            if (SaveLoadManager.Instance != null)
+            {
+                SaveLoadManager.Instance.AutoSave();
+                Debug.Log($"[DialogueManager] 在节点 {currentNodeId} 自动存档");
+            }
+        }
+    }
 
     void Update()
     {
-        // 点击屏幕或触摸继续对话（安卓适配）
         bool inputDetected = Input.GetMouseButtonDown(0);
 
 #if UNITY_ANDROID || UNITY_IOS

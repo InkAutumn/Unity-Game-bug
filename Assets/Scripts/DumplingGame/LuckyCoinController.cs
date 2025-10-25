@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 幸运硬币控制器 - 新版包饺子小游戏特殊环节
+/// 幸运硬币控制器
 /// 控制硬币的显示、动画和点击检测
-/// Unity 5兼容版本
 /// </summary>
 public class LuckyCoinController : MonoBehaviour
 {
@@ -22,7 +21,7 @@ public class LuckyCoinController : MonoBehaviour
     public float pulseMax = 1.1f;        // 最大缩放
     
     [Header("Position")]
-    public Vector2 coinPosition = new Vector2(400f, 0f);  // 硬币位置（右侧）
+    public Vector2 coinPosition = new Vector2(400f, 0f); 
     
     // 动画状态
     private float rotationAngle = 0f;
@@ -30,17 +29,15 @@ public class LuckyCoinController : MonoBehaviour
     private bool isShowing = false;
     
     // 事件回调
-    public System.Action OnCoinClicked;  // 硬币被点击回调
+    public System.Action OnCoinClicked;
     
     void Start()
     {
-        // 初始化隐藏
         if (coinObject != null)
         {
             coinObject.SetActive(false);
         }
         
-        // 绑定按钮点击事件
         if (coinButton != null)
         {
             coinButton.onClick.AddListener(OnCoinClick);
@@ -54,7 +51,6 @@ public class LuckyCoinController : MonoBehaviour
             return;
         }
         
-        // 旋转动画
         if (enableRotation && coinObject != null)
         {
             rotationAngle += rotationSpeed * Time.deltaTime;
@@ -65,7 +61,6 @@ public class LuckyCoinController : MonoBehaviour
             coinObject.transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
         }
         
-        // 脉冲动画
         if (enablePulse && coinObject != null)
         {
             pulseTime += pulseSpeed * Time.deltaTime;
@@ -84,18 +79,15 @@ public class LuckyCoinController : MonoBehaviour
             coinObject.SetActive(true);
             isShowing = true;
             
-            // 设置位置
             RectTransform rectTransform = coinObject.GetComponent<RectTransform>();
             if (rectTransform != null)
             {
                 rectTransform.anchoredPosition = coinPosition;
             }
             
-            // 重置动画状态
             rotationAngle = 0f;
             pulseTime = 0f;
             
-            // 播放出现音效（如果有AudioManager）
             if (AudioManager.Instance != null)
             {
                 AudioManager.Instance.PlaySFX("coin_appear");
@@ -126,19 +118,16 @@ public class LuckyCoinController : MonoBehaviour
     {
         Debug.Log("[LuckyCoin] 硬币被点击");
         
-        // 播放点击音效
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("coin_click");
         }
         
-        // 触发回调
         if (OnCoinClicked != null)
         {
             OnCoinClicked();
         }
         
-        // 隐藏硬币
         HideCoin();
     }
     

@@ -14,7 +14,637 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startNodeId: 100
   nodes:
-  - nodeId: 0
+  - nodeId: 100
+    characterName: 
+    dialogueText: "\u9634\u90C1\u7684\u508D\u665A\uFF0C\u4F60\u4E00\u4E2A\u4EBA\u4ECE\u79DF\u4F4F\u7684\u516C\u5BD3\u9192\u6765\u3002\u53C8\u505A\u5669\u68A6\u4E86\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 101
+    triggerMinigame: 1
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 101
+    characterName: 
+    dialogueText: "\u5916\u9762\u97AD\u70AE\u58F0\u9635\u9635\uFF0C\u4F60\u60F3\u8D77\u4ECA\u5929\u662F\u9664\u5915\u591C\u3002\u53C8\u4E00\u5E74\u4E86\u5417\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 102
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 102
+    characterName: 
+    dialogueText: "...\u4ECA\u5E74\u5BF9\u4E8E\u4F60\u662F\u5168\u65B9\u4F4D\u7684\u5931\u63A7\uFF0C\u5DE5\u4F5C\u3001\u8EAB\u4F53...\u4F60\u597D\u50CF\u88AB\u56F0\u5728\u4E86\u751F\u6D3B\u91CC\uFF0C\u5FD9\u5230\u6700\u540E\u6BEB\u65E0\u4EF7\u503C\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 103
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 103
+    characterName: 
+    dialogueText: 
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 104
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 104
+    characterName: 
+    dialogueText: "\u4F60\u6709\u4E70\u5305\u997A\u5B50\u7684\u6750\u6599\u56DE\u5BB6\u3002\u672C\u6765\u4E0D\u60F3\u5305\u7684\uFF0C\u4F46\u662F\u8FC7\u5E74\u561B\uFF0C\u8FD8\u662F\u8981\u5E94\u4E2A\u666F\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 105
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 105
+    characterName: 
+    dialogueText: "\u997A\u5B50\u76AE\u662F\u73B0\u6210\u7684\u3002\u8089\u9985\u5DF2\u7ECF\u88AB\u6405\u597D\u4E86\u914D\u9001\u8FC7\u6765\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 106
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 106
+    characterName: 
+    dialogueText: "\u8BE5\u600E\u4E48\u5305\u6765\u7740\uFF1F"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 107
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 107
+    characterName: 
+    dialogueText: "\u72ED\u5C0F\u7684\u53A8\u623F\u91CC\uFF0C\u4F60\u6253\u5F00\u7535\u89C6\uFF0C\u8FB9\u770B\u8FB9\u5305\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 108
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 108
+    characterName: 
+    dialogueText: 
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 109
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 109
+    characterName: 
+    dialogueText: "\u4E0D\u77E5\u4E0D\u89C9\u95F4\u5305\u5B8C\u4E86\u6240\u6709\uFF01"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 110
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 110
+    characterName: 
+    dialogueText: "\u4F60\u8D77\u9505\u70E7\u6C34\uFF0C\u5F00\u59CB\u4E0B\u997A\u5B50\u716E\u3002\u6C34\u6C7D\u8426\u7ED5\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 111
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 111
+    characterName: 
+    dialogueText: "\u633A\u9EBB\u70E6\u7684\u3002\u660E\u660E\u80FD\u4E70\u73B0\u6210\u7684\uFF0C\u4E3A\u4EC0\u4E48\u8981\u81EA\u5DF1\u5305\u5462..."
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 112
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 112
+    characterName: 
+    dialogueText: "\uFF08\u5267\u70C8\u7684\u5FAE\u4FE1\u8BED\u97F3\u901A\u8BDD\u58F0\u6253\u65AD\u4E86\u601D\u7EEA\uFF09"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 113
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 113
+    characterName: "\u5988\u5988"
+    dialogueText: "\u56E1\u56E1\uFF0C\u65B0\u5E74\u5FEB\u4E50\uFF01\u600E\u4E48\u8FC7\u5E74\u4E5F\u4E0D\u56DE\u5BB6\u554A\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: "\u65B0\u5E74\u5FEB\u4E50\uFF01 \u8FD9\u4E0D\u662F\u5DE5\u4F5C\u5FD9\u5417"
+      targetNodeId: 114
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 114
+    characterName: "\u5988\u5988"
+    dialogueText: "\u5927\u5FD9\u4EBA\uFF0C\u5988\u5988\u60F3\u4F60\u4E86\uFF01\u4ECA\u5E74\u600E\u4E48\u8FD8\u662F\u4E00\u4E2A\u4EBA..."
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 115
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 115
+    characterName: "\u4F60\u5185\u5FC3"
+    dialogueText: "\u554A\uFF0C\u53C8\u6765\u4E86"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 116
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 116
+    characterName: "\u5988\u5988"
+    dialogueText: "...\u8BE5\u627E\u4E2A\u5BF9\u8C61\u4E86..."
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: ......
+      targetNodeId: 117
+      requirementFlag: 
+    - choiceText: "\u53C8\u6765\uFF1F\u80FD\u4E0D\u80FD\u4E0D\u8BF4\u8FD9\u4E2A\uFF1F"
+      targetNodeId: 117
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 117
+    characterName: "\u5988\u5988"
+    dialogueText: "...\u66FF\u7238\u5988\u7167\u987E\u4F60\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: ......
+      targetNodeId: 118
+      requirementFlag: 
+    - choiceText: "\u6211\u81EA\u5DF1\u5728\u5916\u9762\u4F1A\u7167\u987E\u597D\u81EA\u5DF1\uFF01\u5988\u4F60\u522B\u8BF4\u4E86\u3002"
+      targetNodeId: 120
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 118
+    characterName: "\u5988\u5988"
+    dialogueText: "\u54CE\uFF0C\u53C8\u5927\u4E00\u5C81\u4E86\uFF0C\u518D\u8001\u5C31\u6CA1\u4EBA\u8981\u4E86\u3002
+      \n\uFF08\u9505\u91CC\u7684\u6C34\u5728\u6CB8\u817E\uFF09"
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: "\u2026\u2026%28\u4F60\u5185\u5FC3\uFF1A\u53C8\u8BF4\u8FD9\u79CD\u8BDD%29"
+      targetNodeId: 122
+      requirementFlag: 
+    - choiceText: "\u597D\u5566\u77E5\u9053\u5566\uFF0C\u6211\u5DF2\u7ECF\u6709\u627E\u7537\u670B\u53CB\u4E86\uFF0C\u522B\u591A\u8BF4\u54C8\u3002"
+      targetNodeId: 124
+      requirementFlag: 
+    - choiceText: "\u8001\u5988\u4F60\u5FEB\u522B\u8BF4\u5566\uFF01\u5927\u8FC7\u5E74\u7684"
+      targetNodeId: 126
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 119
+    characterName: 
+    dialogueText: 
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 120
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 120
+    characterName: "\u5988\u5988"
+    dialogueText: "\u5509\uFF01\u600E\u4E48\u8FD8\u8FD9\u4E48\u4E0D\u61C2\u4E8B\uFF0C\u522B\u4EBA\u90FD\u5F53\u5976\u5976\u4E86\uFF0C\u5988\u5988\u597D\u7FA1\u6155\u554A\u3002
+      \n\uFF08\u9505\u91CC\u7684\u6C34\u5728\u6CB8\u817E\uFF09"
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: "\u2026\u2026%28\u4F60\u5185\u5FC3\uFF1A\u53C8\u8BF4\u8FD9\u79CD\u8BDD%29"
+      targetNodeId: 122
+      requirementFlag: 
+    - choiceText: "\u597D\u5566\u77E5\u9053\u5566\uFF0C\u6211\u5DF2\u7ECF\u6709\u627E\u7537\u670B\u53CB\u4E86\uFF0C\u522B\u591A\u8BF4\u54C8\u3002"
+      targetNodeId: 124
+      requirementFlag: 
+    - choiceText: "\u8001\u5988\u4F60\u5FEB\u522B\u8BF4\u5566\uFF01\u5927\u8FC7\u5E74\u7684"
+      targetNodeId: 126
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 121
+    characterName: 
+    dialogueText: 
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 122
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 122
+    characterName: "\u5988\u5988"
+    dialogueText: "\u600E\u4E48\u90FD\u4E0D\u7406\u5988\u5988\uFF0C\u54CE\uFF01"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 123
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 123
+    characterName: "\u5988\u5988"
+    dialogueText: "\u4F60\u5728\u90A3\u597D\u597D\u7684\uFF0C\u7167\u987E\u597D\u81EA\u5DF1\uFF0C\u522B\u628A\u81EA\u5DF1\u641E\u592A\u7D2F..."
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 128
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 124
+    characterName: "\u5988\u5988"
+    dialogueText: "\u54DF\uFF0C\u597D\u597D\u597D\uFF0C\u4F60\u6709\u8FD9\u4E2A\u5FC3\u601D\u5C31\u597D\u554A\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 125
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 125
+    characterName: "\u5988\u5988"
+    dialogueText: "\u4F60\u5728\u90A3\u597D\u597D\u7684\uFF0C\u7167\u987E\u597D\u81EA\u5DF1\uFF0C\u522B\u628A\u81EA\u5DF1\u641E\u592A\u7D2F..."
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 128
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 126
+    characterName: "\u5988\u5988"
+    dialogueText: "\u6211\u8FD8\u4E0D\u80FD\u8BF4\u4E86\uFF1F\u5509\uFF0C\u7238\u7238\u5988\u5988\u771F\u7684\u5F88\u62C5\u5FC3\u4F60\uFF01"
+    handsSprite: 
+    backgroundImage: 
+    choices:
+    - choiceText: "\u5988\uFF01\u522B\u8BF4\u4E86\uFF01%21"
+      targetNodeId: 127
+      requirementFlag: 
+    nextNodeId: 0
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 127
+    characterName: "\u5988\u5988"
+    dialogueText: "\u6211\u4EEC\u53C8\u4E0D\u80FD\u4FDD\u62A4\u4F60\u4E00\u8F88\u5B50\uFF0C\u4EE5\u540E\u7684\u8DEF\u8FD8\u5F88\u957F\uFF0C\u4F60\u4E00\u4E2A\u4EBA\u600E\u4E48..."
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 128
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 128
+    characterName: 
+    dialogueText: "\uFF08\u542C\u5230\u5267\u70C8\u7684\u6CB8\u817E\u7684\u58F0\u97F3\uFF09"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 129
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 129
+    characterName: 
+    dialogueText: "\u554A\uFF01\u997A\u5B50\u6251\u9505\u4E86\uFF01"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 130
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 130
+    characterName: 
+    dialogueText: "\u5988\u5988\u8FD8\u60F3\u8BF4\u70B9\u4EC0\u4E48\uFF0C\u4F60\u5530\u5730\u4E00\u4E0B\u6302\u4E86\u7535\u8BDD\uFF0C\u8D76\u7D27\u6253\u5F00\u9505\u76D6\u2014\u2014"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 131
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 131
+    characterName: 
+    dialogueText: "\u5267\u70C8\u6CB8\u817E\u7684\u9505\u91CC\uFF0C\u997A\u5B50\u6709\u51E0\u4E2A\u7834\u76AE\u4E86\uFF01"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 132
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 132
+    characterName: 
+    dialogueText: "\u4F60\u4E0D\u559C\u6B22\u8FD9\u51E0\u4E2A\u7834\u76AE\u4E86\u7684\u997A\u5B50\uFF0C\u5B83\u4EEC\u4E0D\u5B8C\u7F8E\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 133
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 133
+    characterName: "\u4F60"
+    dialogueText: "\u4E0D\u5E94\u8BE5\u7834\u7684\uFF0C\u662F\u8FD9\u4E2A\u997A\u5B50\u4E0D\u597D\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 134
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 134
+    characterName: 
+    dialogueText: 
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 135
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 135
+    characterName: "\u4F60"
+    dialogueText: "\u4E0D\uFF0C\u4E0D\u597D\u7684\u662F\u6211\u3002"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 136
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 136
+    characterName: "\u4F60.."
+    dialogueText: "\u660E\u660E\u6211\u4EE5\u524D\u80FD\u505A\u597D\u7684......"
+    handsSprite: 
+    backgroundImage: 
+    choices: []
+    nextNodeId: 137
+    triggerMinigame: 0
+    minigameTargetCount: 0
+    difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
+    enableLuckyDumpling: 0
+    luckyDumplingPosition: 0
+    minigameDialogues: []
+    autoSaveAtThisNode: 0
+  - nodeId: 137
     characterName: 
     dialogueText: 
     handsSprite: 
@@ -23,944 +653,10 @@ MonoBehaviour:
     nextNodeId: 0
     triggerMinigame: 0
     minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
     difficulty: 0
+    minigameBackgroundImage: 
+    minigameDialogueBoxBackground: 
     enableLuckyDumpling: 0
     luckyDumplingPosition: 0
     minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
-  - nodeId: 0
-    characterName: 
-    dialogueText: 
-    handsSprite: 
-    backgroundImage: 
-    choices: []
-    nextNodeId: 0
-    triggerMinigame: 0
-    minigameTargetCount: 0
-    minigameTimeLimit: 0
-    minigameUI:
-      showScoreUI: 0
-      showPerfectCount: 0
-      showGoodCount: 0
-      showFailedCount: 0
-      showTimer: 0
-    specialItem:
-      itemType: 0
-      itemName: 
-      appearOnDumplingNumber: 0
-    useNewMinigame: 0
-    difficulty: 0
-    enableLuckyDumpling: 0
-    luckyDumplingPosition: 0
-    minigameDialogues: []
+    autoSaveAtThisNode: 0

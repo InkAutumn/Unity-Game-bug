@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 /// <summary>
 /// 设置管理器
-/// 处理音量、图像质量等设置
 /// </summary>
 public class SettingsManager : MonoBehaviour
 {
@@ -39,10 +38,8 @@ public class SettingsManager : MonoBehaviour
 
     void Start()
     {
-        // 加载保存的设置
         LoadSettings();
 
-        // 绑定滑块事件
         if (bgmVolumeSlider != null)
         {
             bgmVolumeSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
@@ -58,7 +55,6 @@ public class SettingsManager : MonoBehaviour
             closeButton.onClick.AddListener(CloseSettings);
         }
 
-        // 初始隐藏设置面板
         if (settingsPanel != null)
         {
             settingsPanel.SetActive(false);
@@ -67,7 +63,6 @@ public class SettingsManager : MonoBehaviour
 
     void LoadSettings()
     {
-        // 加载BGM音量
         float bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, defaultBGMVolume);
         if (bgmVolumeSlider != null)
         {
@@ -75,7 +70,6 @@ public class SettingsManager : MonoBehaviour
         }
         ApplyBGMVolume(bgmVolume);
 
-        // 加载SFX音量
         float sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, defaultSFXVolume);
         if (sfxVolumeSlider != null)
         {
@@ -91,7 +85,6 @@ public class SettingsManager : MonoBehaviour
         ApplyBGMVolume(value);
         SaveBGMVolume(value);
 
-        // 更新显示文本
         if (bgmVolumeText != null)
         {
             bgmVolumeText.text = Mathf.RoundToInt(value * 100) + "%";
@@ -103,13 +96,11 @@ public class SettingsManager : MonoBehaviour
         ApplySFXVolume(value);
         SaveSFXVolume(value);
 
-        // 更新显示文本
         if (sfxVolumeText != null)
         {
             sfxVolumeText.text = Mathf.RoundToInt(value * 100) + "%";
         }
 
-        // 播放测试音效
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("buttonClick");
@@ -151,20 +142,12 @@ public class SettingsManager : MonoBehaviour
             settingsPanel.SetActive(false);
         }
 
-        // 播放音效
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("buttonClick");
         }
-
-        // 通知PauseMenuManager返回暂停菜单
-        if (PauseMenuManager.Instance != null)
-        {
-            PauseMenuManager.Instance.CloseAllSubPanels();
-        }
     }
 
-    // 公共方法：显示设置面板
     public void ShowSettings()
     {
         if (settingsPanel != null)
@@ -173,7 +156,6 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    // 公共方法：重置所有设置
     public void ResetToDefault()
     {
         if (bgmVolumeSlider != null)
@@ -189,13 +171,11 @@ public class SettingsManager : MonoBehaviour
         Debug.Log("设置已重置为默认值");
     }
 
-    // 获取当前BGM音量
     public float GetBGMVolume()
     {
         return PlayerPrefs.GetFloat(BGM_VOLUME_KEY, defaultBGMVolume);
     }
 
-    // 获取当前SFX音量
     public float GetSFXVolume()
     {
         return PlayerPrefs.GetFloat(SFX_VOLUME_KEY, defaultSFXVolume);

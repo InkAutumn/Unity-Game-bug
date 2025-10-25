@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DialogueScene.unity
     guid: f91689a47e8312d4083150a909d0712f
-  - enabled: 0
-    path: Assets/Scenes/DumplingGameScene.unity
-    guid: 49ee5829b61515b4a9bccccb86596c28
+  - enabled: 1
+    path: Assets/Scenes/SimpleDumplingGameScene.unity
+    guid: fd570aa151345a34c8e49dbbb3f113d5
   m_configObjects: {}

@@ -20,7 +20,6 @@ public class TVIntroManager : MonoBehaviour
     
     void Start()
     {
-        // 检测使用哪种方式播放
         if (videoPlayer != null)
         {
             useVideoPlayer = true;
@@ -32,7 +31,6 @@ public class TVIntroManager : MonoBehaviour
             SetupAnimator();
         }
         
-        // 确保按钮初始可见
         if (tvPowerButton != null)
         {
             tvPowerButton.SetActive(true);
@@ -58,18 +56,15 @@ public class TVIntroManager : MonoBehaviour
         }
     }
     
-    // 点击电视开关按钮
     public void OnTVPowerButtonClick()
     {
         Debug.Log("电视机开关被点击");
         
-        // 播放音效
         if (AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX("tvClick");
         }
         
-        // 停止播放
         if (useVideoPlayer && videoPlayer != null)
         {
             videoPlayer.Stop();
@@ -79,7 +74,6 @@ public class TVIntroManager : MonoBehaviour
             tvAnimator.SetTrigger(stopTriggerName);
         }
         
-        // 延迟跳转场景（给停止动画/视频一点时间）
         Invoke("LoadDialogueScene", 0.5f);
     }
     
@@ -94,8 +88,6 @@ public class TVIntroManager : MonoBehaviour
             Debug.LogError("对话场景名称未设置！");
         }
     }
-    
-    // 可选：跳过功能
     public void OnSkipButtonClick()
     {
         Debug.Log("跳过按钮被点击");

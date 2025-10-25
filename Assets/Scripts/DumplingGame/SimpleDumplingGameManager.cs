@@ -4,14 +4,12 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
 /// <summary>
-/// 简化版包饺子游戏管理器 - 新版指针判定游戏
-/// 管理游戏流程、计数、幸运饺子等
-/// Unity 5兼容版本
+///包饺子游戏管理器
 /// </summary>
 public class SimpleDumplingGameManager : MonoBehaviour
 {
     [Header("Controllers")]
-    public GameObject progressBarContainer;     // 进度条容器对象
+    public GameObject progressBarHolder;        // 进度条主容器对象
     public GameObject luckyCoinObject;          // 幸运硬币对象
     public GameObject dialogueManagerObject;    // 对话管理器对象
     
@@ -25,7 +23,11 @@ public class SimpleDumplingGameManager : MonoBehaviour
     public GameObject gameplayPhase;      // 阶段2游戏界面
     public GameObject dumplingContainer;  // 左侧饺子显示区域
     public GameObject dumplingPrefab;     // 饺子预制体
-    public Text countText;                // 计数文本（可选）
+    public Text countText;                // 计数文本
+    
+    [Header("Background Elements")]
+    public UnityEngine.UI.Image sceneBackground;  // 场景背景图
+    public UnityEngine.UI.Image dialogueBoxBackground;  // 对话框背景图
     
     [Header("Game Settings")]
     public int targetCount = 5;            // 目标饺子数量
@@ -33,8 +35,19 @@ public class SimpleDumplingGameManager : MonoBehaviour
     public bool enableLuckyDumpling = false;
     public int luckyDumplingPosition = 5;
     
+    [Header("Default Backgrounds (按难度)")]
+    public Sprite easyBackground;          // 童年背景
+    public Sprite normalBackground;        // 青春期背景
+    public Sprite hardBackground;          // 工作期背景
+    public Sprite easyDialogueBox;         // 童年对话框背景
+    public Sprite normalDialogueBox;       // 青春期对话框背景
+    public Sprite hardDialogueBox;         // 工作期对话框背景
+    public Sprite easyChoiceButton;        // 童年选项按钮背景
+    public Sprite normalChoiceButton;      // 青春期选项按钮背景
+    public Sprite hardChoiceButton;        // 工作期选项按钮背景
+    
     [Header("Dialogue Settings")]
-    public List<MinigameDialogue> minigameDialogues = new List<MinigameDialogue>(); // 游戏内对话配置
+    public List<MinigameDialogue> minigameDialogues = new List<MinigameDialogue>(); 
     
     [Header("Audio")]
     public string clickSound = "click";
@@ -59,16 +72,12 @@ public class SimpleDumplingGameManager : MonoBehaviour
     
     void Start()
     {
-        // 获取组件引用
         InitializeComponents();
         
-        // 从GameManager获取配置
         LoadConfigFromGameManager();
         
-        // 初始化
         InitializeGame();
         
-        // 触发游戏开始对话
         TriggerDialogue(MinigameDialogueTrigger.OnGameStart, 0);
     }
     
@@ -77,41 +86,45 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void InitializeComponents()
     {
-        // 获取ProgressBarController
-        if (progressBarContainer != null)
+        if (progressBarHolder != null)
         {
-            progressBar = progressBarContainer.GetComponent<ProgressBarController>();
+            progressBar = progressBarHolder.GetComponent<ProgressBarController>();
             if (progressBar == null)
             {
-                Debug.LogError("[SimpleDumplingGame] ProgressBarContainer上未找到ProgressBarController组件！");
+                Debug.LogError("[SimpleDumplingGame] ProgressBarHolder上未找到ProgressBarController组件");
+            }
+            else
+            {
+                Debug.Log("[SimpleDumplingGame] 成功获取ProgressBarController组件");
             }
         }
+        else
+        {
+            Debug.LogError("[SimpleDumplingGame] progressBarHolder引用为空");
+        }
         
-        // 获取LuckyCoinController
         if (luckyCoinObject != null)
         {
             luckyCoin = luckyCoinObject.GetComponent<LuckyCoinController>();
             if (luckyCoin == null)
             {
-                Debug.LogError("[SimpleDumplingGame] LuckyCoin对象上未找到LuckyCoinController组件！");
+                Debug.LogError("[SimpleDumplingGame] LuckyCoin对象上未找到LuckyCoinController组件");
             }
         }
         
-        // 获取DumplingGameDialogueManager
         if (dialogueManagerObject != null)
         {
             dialogueManager = dialogueManagerObject.GetComponent<DumplingGameDialogueManager>();
             if (dialogueManager == null)
             {
-                Debug.LogError("[SimpleDumplingGame] DialogueManager对象上未找到DumplingGameDialogueManager组件！");
+                Debug.LogError("[SimpleDumplingGame] DialogueManager对象上未找到DumplingGameDialogueManager组件");
             }
         }
     }
     
     void Update()
     {
-        // 检测点击（准备阶段）
-        if (currentPhase == GamePhase.Preparation)
+        if (currentPhase == GamePhase.Preparation && !IsWaitingForDialogueChoice())
         {
             if (InputHandler.GetInputDown())
             {
@@ -121,13 +134,57 @@ public class SimpleDumplingGameManager : MonoBehaviour
     }
     
     /// <summary>
+    /// 检查是否正在等待对话选择
+    /// </summary>
+    private bool IsWaitingForDialogueChoice()
+    {
+        if (dialogueManager == null) return false;
+        
+        if (dialogueManager.dialoguePanel != null && dialogueManager.dialoguePanel.activeSelf)
+        {
+            if (dialogueManager.choicesPanel != null && dialogueManager.choicesPanel.activeSelf)
+            {
+                return true; 
+            }
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
     /// 从GameManager加载配置
     /// </summary>
     private void LoadConfigFromGameManager()
     {
-        // 简化版游戏使用Inspector中的默认配置
-        // 如果需要从DialogueManager加载配置，可以在这里添加
+        if (GameManager.Instance != null)
+        {
+            MinigameConfig config = GameManager.Instance.GetMinigameConfig();
+            if (config != null)
+            {
+                targetCount = config.targetCount;
+                difficulty = config.difficulty;
+                enableLuckyDumpling = config.enableLuckyDumpling;
+                luckyDumplingPosition = config.luckyDumplingPosition;
+                
+                if (config.minigameDialogues != null && config.minigameDialogues.Count > 0)
+                {
+                    minigameDialogues = config.minigameDialogues;
+                }
+                
+                ApplyBackground(config.backgroundImage, config.dialogueBoxBackground);
+                
+                ApplyChoiceButtonBackground();
+                
+                Debug.Log($"[SimpleDumplingGame] 从GameManager加载配置 - 难度: {difficulty}, 目标: {targetCount}");
+                return;
+            }
+        }
+        
         Debug.Log("[SimpleDumplingGame] 使用Inspector默认配置");
+        
+        ApplyBackground("", "");
+        
+        ApplyChoiceButtonBackground();
     }
     
     /// <summary>
@@ -135,13 +192,11 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void InitializeGame()
     {
-        // 重置状态
         completedCount = 0;
         dumplingsList.Clear();
         currentPhase = GamePhase.Preparation;
         waitingForCoin = false;
         
-        // 显示准备阶段
         if (preparationPhase != null)
         {
             preparationPhase.SetActive(true);
@@ -151,13 +206,11 @@ public class SimpleDumplingGameManager : MonoBehaviour
             gameplayPhase.SetActive(false);
         }
         
-        // 隐藏硬币
         if (luckyCoin != null)
         {
             luckyCoin.HideCoin();
         }
         
-        // 清空饺子容器
         if (dumplingContainer != null)
         {
             foreach (Transform child in dumplingContainer.transform)
@@ -166,7 +219,6 @@ public class SimpleDumplingGameManager : MonoBehaviour
             }
         }
         
-        // 更新计数显示
         UpdateCountText();
         
         Debug.Log(string.Format("[SimpleDumplingGame] 初始化完成 - 目标: {0}, 难度: {1}", targetCount, difficulty));
@@ -177,19 +229,15 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void StartGameplay()
     {
-        // 播放点击音效
         PlaySound(clickSound);
         
-        // 检查是否是幸运饺子
         int nextIndex = completedCount + 1;
         if (enableLuckyDumpling && nextIndex == luckyDumplingPosition)
         {
-            // 显示硬币，等待点击
             ShowLuckyCoin();
         }
         else
         {
-            // 正常流程，进入游戏
             EnterGameplayPhase();
         }
     }
@@ -203,7 +251,6 @@ public class SimpleDumplingGameManager : MonoBehaviour
         
         if (luckyCoin != null)
         {
-            // 绑定点击回调
             luckyCoin.OnCoinClicked = OnCoinClicked;
             luckyCoin.ShowCoin();
         }
@@ -216,7 +263,7 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void OnCoinClicked()
     {
-        Debug.Log("[SimpleDumplingGame] 硬币已点击，进入游戏");
+        Debug.Log("[SimpleDumplingGame] 硬币已点击");
         EnterGameplayPhase();
     }
     
@@ -227,7 +274,6 @@ public class SimpleDumplingGameManager : MonoBehaviour
     {
         currentPhase = GamePhase.Gameplay;
         
-        // 切换界面
         if (preparationPhase != null)
         {
             preparationPhase.SetActive(false);
@@ -237,7 +283,6 @@ public class SimpleDumplingGameManager : MonoBehaviour
             gameplayPhase.SetActive(true);
         }
         
-        // 设置难度并开始进度条游戏
         if (progressBar != null)
         {
             progressBar.SetDifficulty(difficulty);
@@ -257,12 +302,10 @@ public class SimpleDumplingGameManager : MonoBehaviour
         
         if (success)
         {
-            // 成功
             OnSuccess();
         }
         else
         {
-            // 失败
             OnFail();
         }
     }
@@ -272,32 +315,24 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void OnSuccess()
     {
-        // 播放成功音效
         PlaySound(successSound);
         
-        // 增加计数
         completedCount++;
         
-        // 显示饺子
         AddDumplingToContainer();
         
-        // 更新计数
         UpdateCountText();
         
-        // 触发饺子完成对话
         bool hasDialogue = TriggerDialogue(MinigameDialogueTrigger.OnDumplingComplete, completedCount);
         
-        // 检查是否完成所有
         if (completedCount >= targetCount)
         {
             CompleteGame();
         }
         else if (!hasDialogue)
         {
-            // 如果没有对话，直接继续下一个
             ReturnToPreparation();
         }
-        // 如果有对话，等对话完成后会自动继续
     }
     
     /// <summary>
@@ -305,18 +340,14 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private void OnFail()
     {
-        // 播放失败音效
         PlaySound(failSound);
         
-        // 触发失败对话
         bool hasDialogue = TriggerDialogue(MinigameDialogueTrigger.OnFail, completedCount);
         
-        // 失败不计数，重新包这个饺子
         if (!hasDialogue)
         {
             ReturnToPreparation();
         }
-        // 如果有对话，等对话完成后会自动继续
     }
     
     /// <summary>
@@ -329,7 +360,7 @@ public class SimpleDumplingGameManager : MonoBehaviour
             GameObject dumpling = Instantiate(dumplingPrefab, dumplingContainer.transform);
             dumplingsList.Add(dumpling);
             
-            Debug.Log(string.Format("[SimpleDumplingGame] 饺子已添加 - 总数: {0}", dumplingsList.Count));
+            Debug.Log(string.Format("[SimpleDumplingGame] 饺子已添加 ， 总数: {0}", dumplingsList.Count));
         }
     }
     
@@ -340,7 +371,6 @@ public class SimpleDumplingGameManager : MonoBehaviour
     {
         currentPhase = GamePhase.Preparation;
         
-        // 切换界面
         if (preparationPhase != null)
         {
             preparationPhase.SetActive(true);
@@ -360,20 +390,16 @@ public class SimpleDumplingGameManager : MonoBehaviour
     {
         currentPhase = GamePhase.Complete;
         
-        // 播放完成音效
         PlaySound(completeSound);
         
         Debug.Log("[SimpleDumplingGame] 游戏完成！");
         
-        // 触发完成对话
         bool hasDialogue = TriggerDialogue(MinigameDialogueTrigger.OnAllComplete, completedCount);
         
         if (!hasDialogue)
         {
-            // 如果没有对话，延迟后返回对话场景
             Invoke("ReturnToDialogue", 2f);
         }
-        // 如果有对话，等对话完成后会自动返回
     }
     
     /// <summary>
@@ -414,7 +440,7 @@ public class SimpleDumplingGameManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 公共方法：设置游戏配置
+    /// 设置游戏配置
     /// </summary>
     public void SetGameConfig(int target, MinigameDifficulty diff, bool enableLucky, int luckyPos)
     {
@@ -428,9 +454,8 @@ public class SimpleDumplingGameManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 触发对话（如果有配置）
+    /// 触发对话
     /// </summary>
-    /// <returns>是否触发了对话</returns>
     private bool TriggerDialogue(MinigameDialogueTrigger trigger, int currentCount)
     {
         if (dialogueManager == null || minigameDialogues == null || minigameDialogues.Count == 0)
@@ -438,47 +463,42 @@ public class SimpleDumplingGameManager : MonoBehaviour
             return false;
         }
         
-        // 查找匹配的对话
         foreach (MinigameDialogue dialogue in minigameDialogues)
         {
-            // 检查触发条件
             if (dialogue.trigger != trigger)
                 continue;
             
-            // 如果是OnDumplingComplete类型，检查计数匹配
             if (trigger == MinigameDialogueTrigger.OnDumplingComplete)
             {
                 if (dialogue.triggerAtCount != -1 && dialogue.triggerAtCount != currentCount)
                     continue;
             }
             
-            // 检查是否只播放一次（简化版：使用trigger和count作为键）
             string dialogueKey = string.Format("{0}_{1}", trigger.ToString(), currentCount);
             if (dialogue.playOnce)
             {
                 if (HasPlayedDialogue(dialogueKey))
                     continue;
                 
-                // 标记为已播放
                 MarkDialogueAsPlayed(dialogueKey);
             }
             
-            // 触发对话
-            Debug.Log(string.Format("[SimpleDumplingGame] 触发对话 - 时机:{0}, 计数:{1}", trigger, currentCount));
+            Debug.Log(string.Format("[SimpleDumplingGame] 触发对话 时机:{0}, 计数:{1}", trigger, currentCount));
             
             if (dialogue.pauseGame)
             {
                 currentPhase = GamePhase.WaitingDialogue;
             }
             
-            // 显示对话（使用3参数版本）
             dialogueManager.ShowDialogue(
                 dialogue.characterName,
                 dialogue.dialogueText,
-                dialogue.choices
+                dialogue.choices,
+                null,
+                dialogue.customDialogueBoxBackground,
+                dialogue.customChoiceButtonBackground
             );
             
-            // 等待对话完成后调用回调
             StartCoroutine(WaitForDialogueComplete());
             
             return true;
@@ -492,17 +512,15 @@ public class SimpleDumplingGameManager : MonoBehaviour
     /// </summary>
     private System.Collections.IEnumerator WaitForDialogueComplete()
     {
-        // 等待对话管理器的对话面板关闭
         while (dialogueManager != null && dialogueManager.dialoguePanel != null && dialogueManager.dialoguePanel.activeSelf)
         {
             yield return null;
         }
         
-        // 对话完成，调用回调
         OnDialogueComplete();
     }
     
-    // 播放追踪（简化实现）
+    // 播放追踪
     private System.Collections.Generic.HashSet<string> playedDialogues = new System.Collections.Generic.HashSet<string>();
     
     private bool HasPlayedDialogue(string key)
@@ -525,16 +543,139 @@ public class SimpleDumplingGameManager : MonoBehaviour
     {
         Debug.Log("[SimpleDumplingGame] 对话完成，继续游戏");
         
-        // 根据当前状态决定下一步
         if (currentPhase == GamePhase.Complete)
         {
-            // 如果是完成阶段的对话，返回主场景
             Invoke("ReturnToDialogue", 1f);
         }
         else
         {
-            // 其他情况返回准备阶段
             ReturnToPreparation();
+        }
+    }
+    
+    /// <summary>
+    /// 应用背景图
+    /// </summary>
+    private void ApplyBackground(string backgroundImageName, string dialogueBoxBackgroundName)
+    {
+        if (sceneBackground != null)
+        {
+            Sprite bgSprite = null;
+            
+            if (!string.IsNullOrEmpty(backgroundImageName))
+            {
+                bgSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundImageName);
+                if (bgSprite == null)
+                {
+                    Debug.LogWarning($"[SimpleDumplingGame] 未找到背景图: {backgroundImageName}，使用默认背景");
+                }
+            }
+            
+            if (bgSprite == null)
+            {
+                bgSprite = GetDefaultBackground(difficulty);
+            }
+            
+            if (bgSprite != null)
+            {
+                sceneBackground.sprite = bgSprite;
+                Debug.Log($"[SimpleDumplingGame] 场景背景已应用");
+            }
+        }
+        
+        if (dialogueBoxBackground != null)
+        {
+            Sprite dialogueBgSprite = null;
+            
+            if (!string.IsNullOrEmpty(dialogueBoxBackgroundName))
+            {
+                dialogueBgSprite = Resources.Load<Sprite>("Backgrounds/" + dialogueBoxBackgroundName);
+                if (dialogueBgSprite == null)
+                {
+                    Debug.LogWarning($"[SimpleDumplingGame] 未找到对话框背景图: {dialogueBoxBackgroundName}，使用默认背景");
+                }
+            }
+            
+            if (dialogueBgSprite == null)
+            {
+                dialogueBgSprite = GetDefaultDialogueBoxBackground(difficulty);
+            }
+            
+            if (dialogueBgSprite != null)
+            {
+                dialogueBoxBackground.sprite = dialogueBgSprite;
+                Debug.Log($"[SimpleDumplingGame] 对话框背景已应用");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 根据难度获取默认场景背景
+    /// </summary>
+    private Sprite GetDefaultBackground(MinigameDifficulty diff)
+    {
+        switch (diff)
+        {
+            case MinigameDifficulty.Easy:
+                return easyBackground;
+            case MinigameDifficulty.Normal:
+                return normalBackground;
+            case MinigameDifficulty.Hard:
+                return hardBackground;
+            default:
+                return normalBackground;
+        }
+    }
+    
+    /// <summary>
+    /// 根据难度获取默认对话框背景
+    /// </summary>
+    private Sprite GetDefaultDialogueBoxBackground(MinigameDifficulty diff)
+    {
+        switch (diff)
+        {
+            case MinigameDifficulty.Easy:
+                return easyDialogueBox;
+            case MinigameDifficulty.Normal:
+                return normalDialogueBox;
+            case MinigameDifficulty.Hard:
+                return hardDialogueBox;
+            default:
+                return normalDialogueBox;
+        }
+    }
+    
+    /// <summary>
+    /// 根据难度获取选项按钮背景
+    /// </summary>
+    private Sprite GetChoiceButtonBackground(MinigameDifficulty diff)
+    {
+        switch (diff)
+        {
+            case MinigameDifficulty.Easy:
+                return easyChoiceButton;
+            case MinigameDifficulty.Normal:
+                return normalChoiceButton;
+            case MinigameDifficulty.Hard:
+                return hardChoiceButton;
+            default:
+                return normalChoiceButton;
+        }
+    }
+    
+    /// <summary>
+    /// 应用选项按钮背景到对话管理器
+    /// </summary>
+    private void ApplyChoiceButtonBackground()
+    {
+        if (dialogueManager != null)
+        {
+            Sprite choiceButtonBg = GetChoiceButtonBackground(difficulty);
+            if (choiceButtonBg != null)
+            {
+                dialogueManager.SetChoiceButtonBackground(choiceButtonBg);
+                Debug.Log($"[SimpleDumplingGame] 选项按钮背景已设置");
+            }
         }
     }
 }

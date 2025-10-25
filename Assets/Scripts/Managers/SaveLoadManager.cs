@@ -15,7 +15,6 @@ public class SaveData
     
     // 成就系统数据
     public List<int> unlockedAchievements = new List<int>();  // 已解锁的成就ID列表
-    public int totalPerfectDumplings = 0;                      // 完美饺子总数
 }
 
 public class SaveLoadManager : MonoBehaviour
@@ -42,30 +41,25 @@ public class SaveLoadManager : MonoBehaviour
     {
         SaveData data = new SaveData();
 
-        // 保存对话管理器状态
         if (DialogueManager.Instance != null)
         {
             data.currentNodeId = DialogueManager.Instance.GetCurrentNodeId();
             data.storyFlags = DialogueManager.Instance.GetAllStoryFlags();
         }
 
-        // 保存历史记录
         if (DialogueHistoryManager.Instance != null)
         {
             data.dialogueHistory = DialogueHistoryManager.Instance.GetHistoryForSave();
         }
 
-        // 保存小游戏前节点ID
         if (GameManager.Instance != null)
         {
             data.preMinigameNodeId = GameManager.Instance.GetPreMinigameNodeId();
         }
 
-        // 保存成就数据
         if (AchievementManager.Instance != null)
         {
             data.unlockedAchievements = AchievementManager.Instance.GetUnlockedAchievementIds();
-            data.totalPerfectDumplings = AchievementManager.Instance.GetTotalPerfectDumplings();
         }
 
         data.saveTime = DateTime.Now;
@@ -77,22 +71,19 @@ public class SaveLoadManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 保存到指定节点（用于小游戏退出保存）
+    /// 保存到指定节点
     /// </summary>
     public void SaveGameAtNode(int nodeId)
     {
         SaveData data = new SaveData();
 
-        // 保存到指定节点
         data.currentNodeId = nodeId;
 
-        // 保存剧情标记
         if (DialogueManager.Instance != null)
         {
             data.storyFlags = DialogueManager.Instance.GetAllStoryFlags();
         }
 
-        // 保存历史记录
         if (DialogueHistoryManager.Instance != null)
         {
             data.dialogueHistory = DialogueHistoryManager.Instance.GetHistoryForSave();
@@ -129,7 +120,6 @@ public class SaveLoadManager : MonoBehaviour
             if (AchievementManager.Instance != null && data != null)
             {
                 AchievementManager.Instance.LoadUnlockedAchievements(data.unlockedAchievements);
-                AchievementManager.Instance.SetTotalPerfectDumplings(data.totalPerfectDumplings);
             }
 
             Debug.Log("游戏已加载自: " + saveFilePath);
@@ -157,7 +147,7 @@ public class SaveLoadManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 获取存档信息（用于显示存档时间等）
+    /// 获取存档信息
     /// </summary>
     public SaveData GetSaveInfo()
     {
@@ -168,5 +158,35 @@ public class SaveLoadManager : MonoBehaviour
             return data;
         }
         return null;
+    }
+    
+    /// <summary>
+    /// 自动存档
+    /// </summary>
+    public void AutoSave()
+    {
+        SaveGame();
+        Debug.Log("[SaveLoadManager] 自动存档完成");
+    }
+    
+    /// <summary>
+    /// 加载最近的存档
+    /// </summary>
+    public void LoadLatestSave()
+    {
+        if (!HasSaveFile())
+        {
+            Debug.LogWarning("[SaveLoadManager] 没有可用的存档");
+            return;
+        }
+        
+        SaveData data = LoadGame();
+        
+        if (data != null && DialogueManager.Instance != null)
+        {
+            // 跳转到存档的节点
+            DialogueManager.Instance.StartDialogueFromNode(data.currentNodeId);
+            Debug.Log($"[SaveLoadManager] 已加载存档，跳转到节点 {data.currentNodeId}");
+        }
     }
 }

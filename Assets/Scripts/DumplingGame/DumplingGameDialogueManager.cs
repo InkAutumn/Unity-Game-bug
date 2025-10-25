@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 /// <summary>
 /// 包饺子游戏内对话管理器
-/// 支持在游戏不同阶段插入对话
-/// 兼容SimpleDumplingGameManager
 /// </summary>
 public class DumplingGameDialogueManager : MonoBehaviour
 {
@@ -16,6 +14,11 @@ public class DumplingGameDialogueManager : MonoBehaviour
     public Text dialogueText;
     public GameObject choicesPanel;
     public GameObject choiceButtonPrefab;
+    public Image dialogueBoxImage; // 对话框背景图
+    
+    [Header("Dialogue Box Styles")]
+    public Sprite narratorDialogueBox; // 旁白对话框
+    public Sprite characterDialogueBox; // 角色对话框
     
     [Header("Settings")]
     public float textSpeed = 0.05f;
@@ -25,6 +28,8 @@ public class DumplingGameDialogueManager : MonoBehaviour
     private int currentCharIndex = 0;
     private List<DialogueChoice> currentChoices;
     private System.Action onDialogueComplete; // 对话完成回调
+    private Sprite choiceButtonBackground; // 选项按钮背景图
+    private Sprite currentDialogueBoxBg; // 当前对话框背景
     
     // 追踪已播放的对话（避免重复）
     private HashSet<string> playedDialogues = new HashSet<string>();
@@ -43,9 +48,17 @@ public class DumplingGameDialogueManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 显示对话（带可选的选项和完成回调）
+    /// 显示对话
     /// </summary>
     public void ShowDialogue(string characterName, string dialogue, List<DialogueChoice> choices = null, System.Action onComplete = null)
+    {
+        ShowDialogue(characterName, dialogue, choices, onComplete, null, null);
+    }
+    
+    /// <summary>
+    /// 显示对话
+    /// </summary>
+    public void ShowDialogue(string characterName, string dialogue, List<DialogueChoice> choices, System.Action onComplete, string customDialogueBoxBg, string customChoiceButtonBg)
     {
         isDialogueActive = true;
         onDialogueComplete = onComplete;
@@ -55,13 +68,64 @@ public class DumplingGameDialogueManager : MonoBehaviour
             dialoguePanel.SetActive(true);
         }
         
-        // 显示角色名
+        bool isNarrator = string.IsNullOrEmpty(characterName);
+        
+        // 显示/隐藏角色名
         if (characterNameText != null)
         {
-            characterNameText.text = characterName;
+            if (isNarrator)
+            {
+                characterNameText.gameObject.SetActive(false);
+            }
+            else
+            {
+                characterNameText.gameObject.SetActive(true);
+                characterNameText.text = characterName;
+            }
         }
         
-        // 开始打字机效果
+        // 切换对话框背景
+        if (dialogueBoxImage != null)
+        {
+            Sprite dialogueBg = null;
+            
+            if (!string.IsNullOrEmpty(customDialogueBoxBg))
+            {
+                dialogueBg = Resources.Load<Sprite>("Backgrounds/" + customDialogueBoxBg);
+                if (dialogueBg == null)
+                {
+                    Debug.LogWarning($"[DumplingGameDialogue] 未找到自定义对话框背景: {customDialogueBoxBg}");
+                }
+            }
+            
+            if (dialogueBg == null)
+            {
+                if (isNarrator && narratorDialogueBox != null)
+                {
+                    dialogueBg = narratorDialogueBox;
+                }
+                else if (!isNarrator && characterDialogueBox != null)
+                {
+                    dialogueBg = characterDialogueBox;
+                }
+            }
+            
+            if (dialogueBg != null)
+            {
+                dialogueBoxImage.sprite = dialogueBg;
+                currentDialogueBoxBg = dialogueBg;
+            }
+        }
+        
+        if (!string.IsNullOrEmpty(customChoiceButtonBg))
+        {
+            Sprite customBg = Resources.Load<Sprite>("Backgrounds/" + customChoiceButtonBg);
+            if (customBg != null)
+            {
+                choiceButtonBackground = customBg;
+            }
+        }
+        
         currentDialogue = dialogue;
         currentCharIndex = 0;
         currentChoices = choices;
@@ -73,7 +137,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
         
         InvokeRepeating("TypeNextCharacter", 0f, textSpeed);
         
-        // 如果有选项，等打字完成后显示
         if (choices != null && choices.Count > 0)
         {
             float delayTime = dialogue.Length * textSpeed + 0.2f;
@@ -102,7 +165,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
         if (choicesPanel == null || currentChoices == null || currentChoices.Count == 0)
             return;
         
-        // 清空现有选项
         foreach (Transform child in choicesPanel.transform)
         {
             Destroy(child.gameObject);
@@ -110,7 +172,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
         
         choicesPanel.SetActive(true);
         
-        // 创建选项按钮
         foreach (DialogueChoice choice in currentChoices)
         {
             if (choiceButtonPrefab == null)
@@ -128,10 +189,18 @@ public class DumplingGameDialogueManager : MonoBehaviour
                 buttonText.text = choice.choiceText;
             }
             
-            // 绑定点击事件
+            if (choiceButtonBackground != null)
+            {
+                Image buttonImage = buttonObj.GetComponent<Image>();
+                if (buttonImage != null)
+                {
+                    buttonImage.sprite = choiceButtonBackground;
+                }
+            }
+            
             if (button != null)
             {
-                DialogueChoice selectedChoice = choice; // 闭包
+                DialogueChoice selectedChoice = choice;
                 button.onClick.AddListener(() => OnChoiceSelected(selectedChoice));
             }
         }
@@ -171,7 +240,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
             choicesPanel.SetActive(false);
         }
         
-        // 清空选项
         if (choicesPanel != null)
         {
             foreach (Transform child in choicesPanel.transform)
@@ -180,7 +248,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
             }
         }
         
-        // 调用完成回调
         if (onDialogueComplete != null)
         {
             onDialogueComplete.Invoke();
@@ -195,7 +262,6 @@ public class DumplingGameDialogueManager : MonoBehaviour
     {
         if (!isDialogueActive) return;
         
-        // 如果还在打字，立即完成
         if (currentCharIndex < currentDialogue.Length)
         {
             CancelInvoke("TypeNextCharacter");
@@ -207,14 +273,12 @@ public class DumplingGameDialogueManager : MonoBehaviour
         }
         else if (currentChoices == null || currentChoices.Count == 0)
         {
-            // 无选项，直接关闭对话
             CloseDialogue();
         }
     }
     
     void Update()
     {
-        // PC端：点击屏幕继续
         if (isDialogueActive && InputHandler.GetInputDown())
         {
             OnDialogueClick();
@@ -222,7 +286,7 @@ public class DumplingGameDialogueManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 检查对话是否已播放（用于playOnce功能）
+    /// 检查对话是否已播放
     /// </summary>
     public bool HasPlayed(string dialogueKey)
     {
@@ -241,7 +305,7 @@ public class DumplingGameDialogueManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 重置播放记录（新游戏或重新开始时调用）
+    /// 重置播放记录
     /// </summary>
     public void ResetPlayedDialogues()
     {
@@ -249,10 +313,19 @@ public class DumplingGameDialogueManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 获取对话唯一键（用于追踪）
+    /// 获取对话唯一键
     /// </summary>
     public static string GetDialogueKey(MinigameDialogueTrigger trigger, int count)
     {
         return string.Format("{0}_{1}", trigger.ToString(), count);
+    }
+    
+    /// <summary>
+    /// 设置选项按钮背景
+    /// </summary>
+    public void SetChoiceButtonBackground(Sprite background)
+    {
+        choiceButtonBackground = background;
+        Debug.Log("[DumplingGameDialogue] 选项按钮背景已设置");
     }
 }

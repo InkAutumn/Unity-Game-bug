@@ -20,7 +20,7 @@ public class AchievementUIManager : MonoBehaviour
     public Button detailCloseButton;            // 关闭详情按钮
 
     [Header("Statistics")]
-    public Text statisticsText;                 // 统计文本（如"6/10"）
+    public Text statisticsText;                 // 统计文本
 
     [Header("Locked State")]
     public Sprite lockedSprite;                 // 锁定状态图片
@@ -55,7 +55,7 @@ public class AchievementUIManager : MonoBehaviour
     {
         if (achievementPanel == null)
         {
-            Debug.LogError("Achievement Panel未设置！");
+            Debug.LogError("Achievement Panel未设置");
             return;
         }
 
@@ -119,7 +119,7 @@ public class AchievementUIManager : MonoBehaviour
     {
         if (achievementItemPrefab == null || achievementGrid == null)
         {
-            Debug.LogError("成就条目预制体或网格容器未设置！");
+            Debug.LogError("成就条目预制体或网格容器未设置");
             return;
         }
 
@@ -236,7 +236,7 @@ public class AchievementItemUI : MonoBehaviour
         achievement = ach;
         uiManager = manager;
 
-        // 自动获取组件（如果Inspector中没有拖入）
+        // 自动获取组件
         if (iconImage == null)
             iconImage = transform.Find("Icon")?.GetComponent<Image>();
         if (lockedOverlay == null)
@@ -314,7 +314,6 @@ public class AchievementItemUI : MonoBehaviour
     {
         if (uiManager != null && achievement != null)
         {
-            // 只有已解锁的成就才能查看详情
             if (achievement.isUnlocked)
             {
                 uiManager.ShowDetail(achievement);
@@ -322,7 +321,7 @@ public class AchievementItemUI : MonoBehaviour
             else
             {
                 Debug.Log("此成就尚未解锁");
-                // 可选：播放音效或显示提示
+                
             }
         }
     }

@@ -15,7 +15,7 @@ public class DialogueHistoryManager : MonoBehaviour
     {
         public string characterName;
         public string dialogueText;
-        public string timestamp;  // 可选：记录时间戳
+        public string timestamp;
 
         public DialogueHistoryEntry(string name, string text)
         {
@@ -27,11 +27,11 @@ public class DialogueHistoryManager : MonoBehaviour
 
     [Header("UI References")]
     public GameObject historyPanel;
-    public Transform historyContentContainer;  // ScrollView的Content
-    public GameObject historyEntryPrefab;      // 历史条目预制体
+    public Transform historyContentContainer; 
+    public GameObject historyEntryPrefab; 
 
     [Header("Settings")]
-    public int maxHistoryEntries = 100;        // 最大记录数量
+    public int maxHistoryEntries = 100;
 
     private List<DialogueHistoryEntry> historyEntries = new List<DialogueHistoryEntry>();
 
@@ -53,11 +53,9 @@ public class DialogueHistoryManager : MonoBehaviour
     /// </summary>
     public void AddDialogueEntry(string characterName, string dialogueText)
     {
-        // 创建新条目
         DialogueHistoryEntry entry = new DialogueHistoryEntry(characterName, dialogueText);
         historyEntries.Add(entry);
 
-        // 限制最大数量
         if (historyEntries.Count > maxHistoryEntries)
         {
             historyEntries.RemoveAt(0);
@@ -77,16 +75,13 @@ public class DialogueHistoryManager : MonoBehaviour
             return;
         }
 
-        // 清空现有显示
         ClearHistoryDisplay();
 
-        // 创建历史条目UI
         foreach (DialogueHistoryEntry entry in historyEntries)
         {
             CreateHistoryEntryUI(entry);
         }
 
-        // 滚动到底部（最新记录）
         Canvas.ForceUpdateCanvases();
         if (historyContentContainer.GetComponentInParent<ScrollRect>() != null)
         {
@@ -101,23 +96,20 @@ public class DialogueHistoryManager : MonoBehaviour
 
         if (historyEntryPrefab != null)
         {
-            // 使用预制体
             entryObj = Instantiate(historyEntryPrefab, historyContentContainer);
         }
         else
         {
-            // 创建简单文本条目
             entryObj = new GameObject("HistoryEntry");
             entryObj.transform.SetParent(historyContentContainer);
             entryObj.AddComponent<LayoutElement>().preferredHeight = 80;
         }
 
-        // 设置文本内容
         Text[] texts = entryObj.GetComponentsInChildren<Text>();
         if (texts.Length >= 2)
         {
-            texts[0].text = entry.characterName;      // 角色名
-            texts[1].text = entry.dialogueText;       // 对话内容
+            texts[0].text = entry.characterName;      
+            texts[1].text = entry.dialogueText;
         }
         else if (texts.Length == 1)
         {
@@ -131,7 +123,6 @@ public class DialogueHistoryManager : MonoBehaviour
     {
         if (historyContentContainer == null) return;
 
-        // 删除所有子对象
         foreach (Transform child in historyContentContainer)
         {
             Destroy(child.gameObject);
@@ -173,6 +164,55 @@ public class DialogueHistoryManager : MonoBehaviour
         {
             historyEntries = new List<DialogueHistoryEntry>(savedHistory);
             Debug.Log($"加载历史记录: {historyEntries.Count} 条");
+        }
+    }
+    
+    /// <summary>
+    /// 切换历史面板显示/隐藏
+    /// </summary>
+    public void ToggleHistoryPanel()
+    {
+        if (historyPanel == null)
+        {
+            Debug.LogWarning("[DialogueHistoryManager] 历史面板未设置");
+            return;
+        }
+        
+        bool isActive = historyPanel.activeSelf;
+        
+        if (isActive)
+        {
+            historyPanel.SetActive(false);
+            Debug.Log("[DialogueHistoryManager] 关闭历史面板");
+        }
+        else
+        {
+            historyPanel.SetActive(true);
+            RefreshHistoryDisplay();
+            Debug.Log("[DialogueHistoryManager] 打开历史面板");
+        }
+    }
+    
+    /// <summary>
+    /// 显示历史面板
+    /// </summary>
+    public void ShowHistoryPanel()
+    {
+        if (historyPanel != null)
+        {
+            historyPanel.SetActive(true);
+            RefreshHistoryDisplay();
+        }
+    }
+    
+    /// <summary>
+    /// 隐藏历史面板
+    /// </summary>
+    public void HideHistoryPanel()
+    {
+        if (historyPanel != null)
+        {
+            historyPanel.SetActive(false);
         }
     }
 }

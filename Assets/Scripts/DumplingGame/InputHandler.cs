@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// 统一的输入处理器，支持鼠标和触摸
 public class InputHandler : MonoBehaviour
 {
     public static Vector2 GetInputPosition()
@@ -49,7 +48,6 @@ public class InputHandler : MonoBehaviour
         return Input.GetMouseButtonUp(0);
     }
 
-    // 检查是否点击在UI上
     public static bool IsPointerOverUI()
     {
 #if UNITY_ANDROID || UNITY_IOS

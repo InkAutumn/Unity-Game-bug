@@ -69,7 +69,6 @@ public class ChapterManager : MonoBehaviour
         [Tooltip("该章节的对话数据资产")]
         public DialogueData dialogueData = null;
 
-        // 检查节点是否在此章节范围内
         public bool ContainsNode(int nodeId)
         {
             return nodeId >= startNodeId && nodeId <= endNodeId;
@@ -105,7 +104,7 @@ public class ChapterManager : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("[ChapterManager] 未找到包含节点" + nodeId + "的章节！");
+        Debug.LogWarning("[ChapterManager] 未找到包含节点" + nodeId + "的章节");
         return null;
     }
 
@@ -170,7 +169,7 @@ public class ChapterManager : MonoBehaviour
             return chapters[0].dialogueData;
         }
         
-        Debug.LogError("[ChapterManager] 没有配置任何章节！");
+        Debug.LogError("[ChapterManager] 没有配置任何章节");
         return null;
     }
 
@@ -184,11 +183,11 @@ public class ChapterManager : MonoBehaviour
     [ContextMenu("验证章节配置")]
     public void ValidateChapters()
     {
-        Debug.Log("=== 开始验证章节配置 ===");
+        Debug.Log("开始验证章节配置");
         
         if (chapters.Count == 0)
         {
-            Debug.LogError("❌ 错误：没有配置任何章节！");
+            Debug.LogError("错误：没有配置任何章节！");
             return;
         }
 
@@ -199,57 +198,52 @@ public class ChapterManager : MonoBehaviour
         {
             ChapterConfig chapter = chapters[i];
             
-            // 检查章节名称
             if (string.IsNullOrEmpty(chapter.chapterName))
             {
-                Debug.LogError("❌ 错误：第" + i + "个章节没有设置名称！");
+                Debug.LogError("错误：第" + i + "个章节没有设置名称！");
                 hasError = true;
             }
 
-            // 检查对话数据
             if (chapter.dialogueData == null)
             {
-                Debug.LogError("❌ 错误：章节\"" + chapter.chapterName + "\"没有配置对话数据！");
+                Debug.LogError("错误：章节\"" + chapter.chapterName + "\"没有配置对话数据！");
                 hasError = true;
             }
 
-            // 检查节点范围
             if (chapter.startNodeId > chapter.endNodeId)
             {
-                Debug.LogError("❌ 错误：章节\"" + chapter.chapterName + "\"的节点范围配置错误！起始节点(" + chapter.startNodeId + ") > 结束节点(" + chapter.endNodeId + ")");
+                Debug.LogError("错误：章节\"" + chapter.chapterName + "\"的节点范围配置错误！起始节点(" + chapter.startNodeId + ") > 结束节点(" + chapter.endNodeId + ")");
                 hasError = true;
             }
 
-            // 检查与其他章节是否重叠
             for (int j = i + 1; j < chapters.Count; j++)
             {
                 ChapterConfig otherChapter = chapters[j];
                 if (IsRangeOverlap(chapter.startNodeId, chapter.endNodeId, 
                                   otherChapter.startNodeId, otherChapter.endNodeId))
                 {
-                    Debug.LogError("❌ 错误：章节\"" + chapter.chapterName + "\"与\"" + otherChapter.chapterName + "\"的节点范围重叠！");
+                    Debug.LogError("错误：章节\"" + chapter.chapterName + "\"与\"" + otherChapter.chapterName + "\"的节点范围重叠！");
                     hasError = true;
                 }
             }
 
-            // 统计节点数量
             int nodeCount = chapter.endNodeId - chapter.startNodeId + 1;
             totalNodes += nodeCount;
             
-            Debug.Log("✓ 章节" + (i+1) + "：" + chapter.chapterName + " (节点" + chapter.startNodeId + "-" + chapter.endNodeId + ", 共" + nodeCount + "个节点)");
+            Debug.Log("章节" + (i+1) + "：" + chapter.chapterName + " (节点" + chapter.startNodeId + "-" + chapter.endNodeId + ", 共" + nodeCount + "个节点)");
         }
 
-        Debug.Log("=== 验证完成 ===");
+        Debug.Log("验证完成");
         Debug.Log("总章节数：" + chapters.Count);
         Debug.Log("总节点数：" + totalNodes);
         
         if (!hasError)
         {
-            Debug.Log("✅ 所有章节配置正确！");
+            Debug.Log("所有章节配置正确！");
         }
         else
         {
-            Debug.LogWarning("⚠️ 章节配置存在错误，请修正后再使用！");
+            Debug.LogWarning("章节配置存在错误");
         }
     }
 
@@ -271,7 +265,7 @@ public class ChapterManager : MonoBehaviour
     [ContextMenu("打印章节列表")]
     public void PrintChapterList()
     {
-        Debug.Log("=== 章节列表 ===");
+        Debug.Log("章节列表");
         for (int i = 0; i < chapters.Count; i++)
         {
             ChapterConfig chapter = chapters[i];
@@ -289,7 +283,7 @@ public class ChapterManager : MonoBehaviour
     {
         int[] testNodes = { 100, 200, 300, 400, 500 };
         
-        Debug.Log("=== 测试节点查询 ===");
+        Debug.Log("测试节点查询");
         foreach (int nodeId in testNodes)
         {
             string chapterName = GetChapterName(nodeId);

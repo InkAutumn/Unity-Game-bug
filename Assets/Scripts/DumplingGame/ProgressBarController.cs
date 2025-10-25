@@ -2,49 +2,59 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// 进度条控制器 - 新版包饺子小游戏
-/// 控制指针在半圆进度条上旋转，判定是否在绿色区域
-/// Unity 5兼容版本
+/// 进度条控制器
+/// 指针在直线进度条上移动，判定是否在绿色区域
 /// </summary>
 public class ProgressBarController : MonoBehaviour
 {
     [Header("UI References")]
-    public Image progressBarBackground;  // 进度条背景
-    public Image redZone1;               // 红色区域1（左侧）
-    public Image greenZone;              // 绿色区域（中间）
-    public Image redZone2;               // 红色区域2（右侧）
     public RectTransform pointer;        // 指针
+    public RectTransform progressBar;    // 进度条
+    public Image greenZone;              // 绿色区域
     
     [Header("Gameplay Settings")]
-    public float gameDuration = 4f;      // 游戏时长（秒）
-    public float autoRotateSpeed = 45f;  // 自动逆时针旋转速度（度/秒）
-    public float manualRotateSpeed = 60f; // 长按顺时针旋转速度（度/秒）
+    public float gameDuration = 5f;      // 游戏时长
+    public float rightMoveSpeed = 200f;  // 向右移动速度
+    public float leftMoveSpeed = 240f;   // 向左移动速度
     
-    [Header("Zone Angles")]
-    public float greenZoneStartAngle = 60f;  // 绿色区域起始角度
-    public float greenZoneEndAngle = 120f;   // 绿色区域结束角度
+    [Header("Progress Bar Range")]
+    public float barStartX = -200f;      // 进度条起始X坐标
+    public float barEndX = 200f;         // 进度条结束X坐标
     
-    [Header("Difficulty Presets")]
-    public DifficultyPreset easyPreset;   // 简单难度
-    public DifficultyPreset normalPreset; // 普通难度
-    public DifficultyPreset hardPreset;   // 困难难度
+    [Header("Green Zone Range")]
+    public float greenZoneStartX = -50f; // 绿色区域起始X坐标
+    public float greenZoneEndX = 50f;    // 绿色区域结束X坐标
     
     // 游戏状态
     private bool isGameActive = false;
-    private float currentAngle = 0f;     // 当前指针角度（0-180度）
+    private float currentX = 0f;         // 当前指针X坐标
     private float timer = 0f;
     
     // 事件回调
-    public System.Action<bool> OnGameComplete;  // 游戏完成回调（true=成功，false=失败）
+    public System.Action<bool> OnGameComplete;  // 游戏完成回调
     
-    [System.Serializable]
-    public class DifficultyPreset
+    void Start()
     {
-        public float greenZoneStart = 60f;
-        public float greenZoneEnd = 120f;
-        public float autoSpeed = 45f;
-        public float manualSpeed = 60f;
-        public float duration = 4f;
+        // 自动获取进度条宽度
+        if (progressBar != null && barStartX == -200f && barEndX == 200f)
+        {
+            float barWidth = progressBar.rect.width;
+            barStartX = -barWidth / 2f;
+            barEndX = barWidth / 2f;
+        }
+        
+        // 自动获取绿色区域位置
+        if (greenZone != null && greenZoneStartX == -50f && greenZoneEndX == 50f)
+        {
+            RectTransform greenRect = greenZone.GetComponent<RectTransform>();
+            if (greenRect != null)
+            {
+                float greenWidth = greenRect.rect.width;
+                float greenPosX = greenRect.anchoredPosition.x;
+                greenZoneStartX = greenPosX - greenWidth / 2f;
+                greenZoneEndX = greenPosX + greenWidth / 2f;
+            }
+        }
     }
     
     void Update()
@@ -54,8 +64,8 @@ public class ProgressBarController : MonoBehaviour
             return;
         }
         
-        // 更新指针旋转
-        UpdatePointerRotation();
+        // 更新指针位置
+        UpdatePointerPosition();
         
         // 更新计时器
         timer += Time.deltaTime;
@@ -73,16 +83,19 @@ public class ProgressBarController : MonoBehaviour
     public void StartGame()
     {
         isGameActive = true;
-        currentAngle = 0f;
+        currentX = barStartX;  // 从左端开始
         timer = 0f;
         
-        // 重置指针位置
+        // 重置指针到起始位置
         if (pointer != null)
         {
-            pointer.rotation = Quaternion.Euler(0, 0, 0);
+            Vector2 pos = pointer.anchoredPosition;
+            pos.x = currentX;
+            pointer.anchoredPosition = pos;
         }
         
-        Debug.Log("[ProgressBar] 游戏开始");
+        Debug.Log(string.Format("[ProgressBar] 游戏开始 - 进度条范围: {0} 到 {1}, 绿色区域: {2} 到 {3}", 
+            barStartX, barEndX, greenZoneStartX, greenZoneEndX));
     }
     
     /// <summary>
@@ -90,58 +103,36 @@ public class ProgressBarController : MonoBehaviour
     /// </summary>
     public void SetDifficulty(MinigameDifficulty difficulty)
     {
-        DifficultyPreset preset = normalPreset;
-        
-        if (difficulty == MinigameDifficulty.Easy)
-        {
-            preset = easyPreset;
-        }
-        else if (difficulty == MinigameDifficulty.Hard)
-        {
-            preset = hardPreset;
-        }
-        
-        // 应用预设
-        greenZoneStartAngle = preset.greenZoneStart;
-        greenZoneEndAngle = preset.greenZoneEnd;
-        autoRotateSpeed = preset.autoSpeed;
-        manualRotateSpeed = preset.manualSpeed;
-        gameDuration = preset.duration;
-        
-        Debug.Log(string.Format("[ProgressBar] 难度设置为: {0}", difficulty));
+        Debug.Log("[ProgressBar] 直线版本不使用难度设置");
     }
     
     /// <summary>
-    /// 更新指针旋转
+    /// 更新指针位置
     /// </summary>
-    private void UpdatePointerRotation()
+    private void UpdatePointerPosition()
     {
-        float deltaAngle = 0f;
+        float deltaX = 0f;
         
-        // 检测输入（长按）
         bool isHolding = InputHandler.GetInput();
         
         if (isHolding)
         {
-            // 长按：顺时针旋转
-            deltaAngle = manualRotateSpeed * Time.deltaTime;
+            deltaX = -leftMoveSpeed * Time.deltaTime;
         }
         else
         {
-            // 自动：逆时针旋转
-            deltaAngle = -autoRotateSpeed * Time.deltaTime;
+            deltaX = rightMoveSpeed * Time.deltaTime;
         }
         
-        // 更新角度
-        currentAngle += deltaAngle;
+        currentX += deltaX;
         
-        // 限制在0-180度范围内
-        currentAngle = Mathf.Clamp(currentAngle, 0f, 180f);
+        currentX = Mathf.Clamp(currentX, barStartX, barEndX);
         
-        // 应用旋转到指针
         if (pointer != null)
         {
-            pointer.rotation = Quaternion.Euler(0, 0, currentAngle);
+            Vector2 pos = pointer.anchoredPosition;
+            pos.x = currentX;
+            pointer.anchoredPosition = pos;
         }
     }
     
@@ -152,13 +143,11 @@ public class ProgressBarController : MonoBehaviour
     {
         isGameActive = false;
         
-        // 检查指针是否在绿色区域
-        bool inGreenZone = (currentAngle >= greenZoneStartAngle && currentAngle <= greenZoneEndAngle);
+        bool inGreenZone = (currentX >= greenZoneStartX && currentX <= greenZoneEndX);
         
-        Debug.Log(string.Format("[ProgressBar] 判定结果 - 角度: {0}, 绿色区域: {1}-{2}, 成功: {3}", 
-            currentAngle, greenZoneStartAngle, greenZoneEndAngle, inGreenZone));
+        Debug.Log(string.Format("[ProgressBar] 判定结果 - 指针位置: {0}, 绿色区域: {1} 到 {2}, 成功: {3}", 
+            currentX, greenZoneStartX, greenZoneEndX, inGreenZone));
         
-        // 触发回调
         if (OnGameComplete != null)
         {
             OnGameComplete(inGreenZone);
@@ -175,11 +164,11 @@ public class ProgressBarController : MonoBehaviour
     }
     
     /// <summary>
-    /// 获取当前角度（用于调试）
+    /// 获取当前位置
     /// </summary>
-    public float GetCurrentAngle()
+    public float GetCurrentPosition()
     {
-        return currentAngle;
+        return currentX;
     }
     
     /// <summary>
@@ -191,7 +180,7 @@ public class ProgressBarController : MonoBehaviour
     }
     
     /// <summary>
-    /// 获取进度（0-1）
+    /// 获取进度
     /// </summary>
     public float GetProgress()
     {

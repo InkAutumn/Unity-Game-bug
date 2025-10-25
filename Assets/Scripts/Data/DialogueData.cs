@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public enum MinigameDifficulty
 {
-    Easy,    // 简单（童年）
-    Normal,  // 普通（青春期）
-    Hard     // 困难（工作期）
+    Easy,    
+    Normal,  
+    Hard     
 }
 
 // 小游戏对话触发时机
@@ -36,7 +36,11 @@ public class DialogueNode
     [Header("Minigame Settings")]
     public bool triggerMinigame = false; // 是否触发包饺子小游戏
     public int minigameTargetCount = 5; // 目标饺子数量
-    public MinigameDifficulty difficulty = MinigameDifficulty.Normal; // 游戏难度
+    public MinigameDifficulty difficulty = MinigameDifficulty.Normal;
+    
+    [Header("Minigame Scene Settings")]
+    public string minigameBackgroundImage = ""; // 小游戏场景背景图
+    public string minigameDialogueBoxBackground = ""; // 小游戏对话框背景图
     
     [Header("Lucky Dumpling")]
     public bool enableLuckyDumpling = false; // 启用幸运饺子
@@ -44,6 +48,9 @@ public class DialogueNode
     
     [Header("In-Game Dialogues")]
     public List<MinigameDialogue> minigameDialogues = new List<MinigameDialogue>(); // 游戏内对话列表
+    
+    [Header("Auto Save")]
+    public bool autoSaveAtThisNode = false; // 是否在此节点自动存档
 }
 
 // 小游戏内对话配置
@@ -52,11 +59,15 @@ public class MinigameDialogue
 {
     public MinigameDialogueTrigger trigger = MinigameDialogueTrigger.OnGameStart; // 触发时机
     public int triggerAtCount = -1; // 当trigger为OnDumplingComplete时指定第几个（-1表示任意）
-    public string characterName = ""; // 角色名
+    public string characterName = ""; // 角色名（空字符串=旁白）
     public string dialogueText = ""; // 对话内容
     public List<DialogueChoice> choices = new List<DialogueChoice>(); // 可选的选项
     public bool pauseGame = true; // 是否暂停游戏
     public bool playOnce = true; // 是否只播放一次
+    
+    [Header("对话框样式（可选，留空则使用默认）")]
+    public string customDialogueBoxBackground = ""; // 自定义对话框背景图名称
+    public string customChoiceButtonBackground = ""; // 自定义选项按钮背景图名称
 }
 
 [Serializable]

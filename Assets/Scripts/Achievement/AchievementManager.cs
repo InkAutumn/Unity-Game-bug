@@ -7,24 +7,16 @@ using UnityEngine;
 /// </summary>
 public class AchievementManager : MonoBehaviour
 {
-    // 单例
     public static AchievementManager Instance { get; private set; }
 
-    // 所有成就列表
-    public List<Achievement> achievements;
+    private List<Achievement> achievements;
 
-    // 已解锁的成就ID集合（用于快速查询）
     private HashSet<int> unlockedAchievementIds;
 
-    // 成就解锁事件
     public event Action<Achievement> OnAchievementUnlocked;
-
-    // 完美饺子计数器（用于"包饺子大师"成就）
-    private int totalPerfectDumplings = 0;
 
     void Awake()
     {
-        // 单例模式
         if (Instance == null)
         {
             Instance = this;
@@ -46,7 +38,7 @@ public class AchievementManager : MonoBehaviour
         achievements = new List<Achievement>();
         List<Achievement> template = AchievementDatabase.GetAllAchievements();
         
-        // 创建副本（避免修改原始数据）
+        // 创建副本
         foreach (Achievement original in template)
         {
             achievements.Add(new Achievement(
@@ -88,7 +80,7 @@ public class AchievementManager : MonoBehaviour
         achievement.isUnlocked = true;
         unlockedAchievementIds.Add(achievement.achievementId);
 
-        Debug.Log($"🏆 成就解锁：{achievement.achievementName}");
+        Debug.Log($"成就解锁：{achievement.achievementName}");
 
         // 触发事件
         if (OnAchievementUnlocked != null)
@@ -181,38 +173,6 @@ public class AchievementManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 增加完美饺子计数
-    /// </summary>
-    public void AddPerfectDumpling()
-    {
-        totalPerfectDumplings++;
-
-        Debug.Log($"完美饺子总数：{totalPerfectDumplings}");
-
-        // 检查"包饺子大师"成就（10个完美饺子）
-        if (totalPerfectDumplings >= 10)
-        {
-            TryUnlockAchievement("dumplingMaster");
-        }
-    }
-
-    /// <summary>
-    /// 获取完美饺子总数
-    /// </summary>
-    public int GetTotalPerfectDumplings()
-    {
-        return totalPerfectDumplings;
-    }
-
-    /// <summary>
-    /// 设置完美饺子总数（用于加载存档）
-    /// </summary>
-    public void SetTotalPerfectDumplings(int count)
-    {
-        totalPerfectDumplings = count;
-    }
-
-    /// <summary>
     /// 重置所有成就（调试用）
     /// </summary>
     public void ResetAllAchievements()
@@ -222,7 +182,6 @@ public class AchievementManager : MonoBehaviour
             achievement.isUnlocked = false;
         }
         unlockedAchievementIds.Clear();
-        totalPerfectDumplings = 0;
 
         Debug.Log("所有成就已重置");
         SaveAchievements();
@@ -252,8 +211,7 @@ public class AchievementManager : MonoBehaviour
     void DebugShowStatus()
     {
         Debug.Log($"=== 成就状态 ===");
-        Debug.Log($"已解锁：{unlockedAchievementIds.Count}/10");
-        Debug.Log($"完美饺子：{totalPerfectDumplings}");
+        Debug.Log($"已解锁：{unlockedAchievementIds.Count}/{achievements.Count}");
         foreach (Achievement a in achievements)
         {
             Debug.Log($"{a.achievementId}. {a.achievementName}: {(a.isUnlocked ? "✓" : "✗")}");

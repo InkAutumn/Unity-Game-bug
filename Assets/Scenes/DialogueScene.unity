@@ -539,8 +539,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -45.000004}
-  m_SizeDelta: {x: -40, y: -130}
+  m_AnchoredPosition: {x: 50, y: -45.000004}
+  m_SizeDelta: {x: -100, y: -130}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &560541945
 CanvasRenderer:
@@ -563,7 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8901961, g: 0.8901961, b: 0.8901961, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -571,7 +571,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 217b40e087219c94b8d47360acc55018, type: 3}
+    m_Font: {fileID: 12800000, guid: d7465b9cb1433c348b23e8446f7627da, type: 3}
     m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
@@ -1132,16 +1132,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443728966}
-  m_LocalRotation: {x: -0, y: -0, z: -0.011940505, w: 0.9999287}
+  m_LocalRotation: {x: 0, y: 0, z: -0.009599217, w: 0.9999539}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 65900316}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.368}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -1.1}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 162.91187, y: -50.169006}
+  m_AnchoredPosition: {x: 160, y: -50.169006}
   m_SizeDelta: {x: 286.2179, y: 80.448}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1443728968
@@ -1165,7 +1165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6509804, g: 0.6509804, b: 0.6509804, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1173,8 +1173,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: d7465b9cb1433c348b23e8446f7627da, type: 3}
-    m_FontSize: 45
+    m_Font: {fileID: 12800000, guid: 217b40e087219c94b8d47360acc55018, type: 3}
+    m_FontSize: 50
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
